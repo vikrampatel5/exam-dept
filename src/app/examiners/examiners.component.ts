@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ExaminerService } from '../services/examiner.service';
 import * as XLSX from 'xlsx';
-import { ExaminerItem } from '../services/examiner.service'
+import { ExaminerItem } from '../services/examiner.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({

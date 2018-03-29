@@ -47,7 +47,7 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
     req.params.id,
     (err, result) => {
       if(err) return next(err);
-      return res.send(result);
+      return res.send({scode: req.params.id});
     }
   );
 });

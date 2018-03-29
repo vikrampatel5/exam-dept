@@ -1,0 +1,74 @@
+<div class="col-12">
+  <h4>Manage Subject Codes</h4>
+  <hr>
+  <form (ngSubmit)="addSCode()" class="form-inline">
+    
+    <div class="form-group col-12 nopadding">
+
+        <div class="col-3 input-group nopadding">
+          <div class="uploader">
+              <span>Choose File</span>
+            <input type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">
+          </div>
+          &nbsp;
+          <div style="z-index: 100;">
+            <button type="button" class="btn btn-sm btn-outline-success" (click)="Upload()">Upload</button>
+          </div>
+        </div>
+      
+      <div class="col-3 input-group">
+        <span style="font-size: 1em; margin: auto 4px">or Add</span> &nbsp;&nbsp;
+        <input type="text" name="scode" id="scode" class="form-control" placeholder="Subject Code" [(ngModel)]="subject.Code">
+      </div>
+      <div class="col-3 input-group">
+        <input type="text" name="sNomen" id="sNomen" class="form-control" placeholder="Subject Nomenclature" [(ngModel)]="subject.Nomenclature">
+      </div>
+      <div class="col-2 input-group">
+        <input type="text" name="group" id="group" class="form-control" placeholder="Group Id" [(ngModel)]="subject.group_id">
+      </div>
+      <div class="col-1 input-group nopadding">
+        <input type="submit" class="btn btn-block btn-sm  btn-outline-success" value="Add Code"/>
+      </div>
+    </div>
+  </form>
+  <br>
+   <div> <!-- *ngIf='subjects.length>0'> -->
+      <div class="form-group input-group">
+        <div class="col-6 nopadding">
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fas fa-search"></i>
+            </div>
+            <input type="text" class="form-control" name="searchString" placeholder="Type Subject Code..." [(ngModel)]="searchString">
+          </div>
+        </div>
+        <div class="col-2">
+          <input type="button" class="btn btn-block btn-sm btn-outline-success" (click)="doit('xlsx')" value="Export">
+        </div>
+      </div>
+    <table class="table table-striped table-bordered table-sm" id="data-table">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Subject Code:</th>
+          <th>Nomenclature:</th>
+          <th>Group ID:</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subject of subjects | filter : 'Code' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
+          <th scope="row">{{idx+1}}</th>
+          <td>{{subject.Code}}</td>
+          <td>{{subject.Nomenclature}}</td>
+          <td>{{subject.group_id}}</td>
+          <td> <a (click)="deleteSubject(subject.Code)">
+            <i class="fas fa-times"></i>
+          </a>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div id="form-bg">
+          <img class="img-responsive" src="../../../assets/images/SGSITS-Indore-Logo.png" alt="S.G.S.I.T.S Logo">
+          <h3 class="heading" id="h3">Login</h3>
+          <div class="underline"></div>
+          <br>
+          <div id="login-form">
+            <form action="#" method="POST" [formGroup]="myform" class="needs-validation"  novalidate>
+              <div class="form-group" >
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" formControlName="email" [ngClass]="{
+                  'has-danger': myform.controls.email.invalid && myform.controls.email.dirty, 
+                  'has-success': myform.controls.email.valid && myform.controls.email.dirty 
+                }">
+                <br>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password" [ngClass]="{
+                  'has-danger': myform.controls.password.invalid && myform.controls.password.dirty, 
+                  'has-success': myform.controls.password.valid && myform.controls.password.dirty 
+                }">
+                <div class="form-control-feedback"
+     *ngIf="myform.controls.password.errors && (myform.controls.password.dirty || myform.controls.password.touched)">
+  <p *ngIf="myform.controls.password.errors.required">Password is required</p>
+  <p *ngIf="myform.controls.password.errors.minlength">Password must be 8 characters long, we need another {{password.errors.minlength.requiredLength - password.errors.minlength.actualLength}} characters </p>
+</div>
+                
+              </div>
+              <div class="form-check">
+                <small class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1"> Remember me
+                </small>
+              </div>
+              <br>
+              <button type="submit" class="btn btn-secondary btn-lg btn-block btn-dark myButton" routerLink="dashboard">Login</button>
+              <br>
+              
+              <small>&copy;opyright 2018 @ S.G.S.I.T.S Indore</small>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>

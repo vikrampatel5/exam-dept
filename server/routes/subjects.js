@@ -27,7 +27,6 @@ subjects.post("/add_subject", (req, res, next) => {
   }
 
   subjects.post("/upload_file", (req, res, next) => {
-    //console.log(req.body);
     //var values = req.body;
     var data = ObjToArray(req.body);
     //var data = [];
@@ -38,7 +37,7 @@ subjects.post("/add_subject", (req, res, next) => {
       result
     ) {
       if (err) return next(err);
-      res.send(req.body);
+      return res.send(result);
     });
   });
 
@@ -56,7 +55,7 @@ subjects.get("/get_subjects", (req, res, next) => {
       req.params.code,
       (err, result) => {
         if (err) return next(err);
-        return res.send(result);
+        return res.send({deleted: req.params.code});
       }
     );
   });

@@ -3,7 +3,6 @@ import { NgModule, Component } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ExaminersComponent } from './examiners/examiners.component';
@@ -24,6 +23,7 @@ import { Http, HttpModule } from '@angular/http';
 import { AllotedService } from './services/alloted.service';
 import { PaperRecievedComponent } from './paper-recieved/paper-recieved.component';
 import { SignupService } from './services/signup.service';
+import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 
 
 const appRoutes: Routes = [
@@ -35,7 +35,8 @@ const appRoutes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      {path: '', redirectTo: 'examiners', pathMatch: 'full'},
+      {path: '', component: DashboardHomeComponent, outlet:'sub'},
+      {path: 'home', component: DashboardHomeComponent, outlet:'sub'},
       {path: 'alloted', component: AllotedComponent, outlet: 'sub'},
       {path: 'examiners', component: ExaminersComponent, outlet: 'sub'},
       {path: 'registerClerk', component: SignupComponent, outlet: 'sub'},
@@ -63,7 +64,8 @@ const appRoutes: Routes = [
     NotificationComponent,
     HelpComponent,
     SubjectsComponent,
-    PaperRecievedComponent
+    PaperRecievedComponent,
+    DashboardHomeComponent
   ],
   imports: [
     FormsModule,

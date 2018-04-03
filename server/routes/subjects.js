@@ -4,15 +4,24 @@ var mysql = require("mysql");
 var con = require("./connection");
 
 subjects.post("/add_subject", (req, res, next) => {
-    console.log(req.body);
-    con.query("INSERT INTO subjects SET ?", req.body, function(
-      err,
-      result,
-      fields
-    ) {
-      if (err) return next(err);
-      res.send(req.body);
+    // console.log(req.body);
+    con.getConnection(function(err,conn){
+      if(err){
+        return next(err);
+      }
+      else{
+        conn.query("INSERT INTO subjects SET ?", req.body, function(
+          err,
+          result,
+          fields
+        ) {
+          if (err) return next(err);
+          conn.release();
+          return res.send(req.body);
+        });
+      }
     });
+    
   });
 
   function ObjToArray(obj) {
@@ -27,37 +36,66 @@ subjects.post("/add_subject", (req, res, next) => {
   }
 
   subjects.post("/upload_file", (req, res, next) => {
+
+    con.getConnection(function(err, conn){
+      if(err){
+        return next(err);
+      }
+      else{
+        //console.log(req.body);
     //var values = req.body;
     var data = ObjToArray(req.body);
     //var data = [];
 
     // console.log(data);
-    con.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ?", [data], function(
+    conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ?", [data], function(
       err,
       result
     ) {
       if (err) return next(err);
-      return res.send(result);
+      conn.release();
+      return res.send(req.body);
     });
+      }
+    });
+    
   });
 
 subjects.get("/get_subjects", (req, res, next) => {
-    con.query("SELECT * FROM subjects", function(err, result, fields) {
-      if (err) return next(err);
-      return res.send(result);
-    });
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query("SELECT * FROM subjects", function(err, result, fields) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(result);
+      });
+    }
+  });
+    
   });
   
   subjects.delete("/delete_subject/:code", (req, res, next) => {
-    console.log(req.params.code);
-    con.query(
+    con.getConnection(function(err, conn){
+      if(err){
+        return next(err);
+      }
+      else{
+         // console.log(req.params.code);
+    conn.query(
       "delete from subjects where Code = ? ",
       req.params.code,
       (err, result) => {
         if (err) return next(err);
-        return res.send({deleted: req.params.code});
+        conn.release();
+        return res.send(result);
       }
     );
+      }
+    })
+   
   });
 
 

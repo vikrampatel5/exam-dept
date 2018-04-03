@@ -15,94 +15,153 @@ function ObjToArray(obj) {
 }
 
 examiners.post("/add_examiner", (req, res, next) => {
-  con.query("INSERT INTO examiners SET ?", req.body, function(
-    err,
-    result,
-    fields
-  ) {
-    if (err) return next(err);
-    res.send(req.body);
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query("INSERT INTO examiners SET ?", req.body, function(
+        err,
+        result,
+        fields
+      ) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(req.body);
+        
+      });
+    }
   });
 });
 
 
 examiners.post("/upload_file", (req, res, next) => {
-  var data = ObjToArray(req.body);
-  console.log(data);
-  con.query("INSERT INTO examiners( name, Subject_code, Department, Address) VALUES ?", [data], function(
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      var data = ObjToArray(req.body);
+  // console.log(data);
+  conn.query("INSERT INTO examiners( name, Subject_code, Department, Address) VALUES ?", [data], function(
     err,
     result
   ) {
     if (err) return next(err);
-    res.send(req.body);
+    conn.release();
+    return res.send(req.body);
+    
   });
+    }
+  });
+  
 });
 
 
 
 examiners.post("/update_examiner", (req, res, next) => {
-  var id = req.body.id;
-  con.query("UPDATE examiners SET ? where id = '"+id+"'", req.body, function(
+  con.getConnection(function(err,conn){
+    if(err){
+      return next(err);
+    }  
+    else{
+      var id = req.body.id;
+  conn.query("UPDATE examiners SET ? where id = '"+id+"'", req.body, function(
     err,
     result,
     fields
   ) {
     if (err) return next(err);
-    res.send(req.body);
+    conn.release();
+    return res.send(req.body);
   });
+    }
+  })
+  
 });
 
 
 examiners.post("/contact_developers", (req, res, next) => {
-  var mailOptions = {
-    to: ['vikrampatel5@gmail.com'],
-    subject: req.body.subject,
-    text: req.body.text
-  };
-  //console.log(mailOptions);
-  smtpTransport.sendMail(mailOptions, function(err, response) {
-    if (err) return next(err);
-    res.send(response);
-    });
+
+      var mailOptions = {
+        to: ['vikrampatel5@gmail.com'],
+        subject: req.body.subject,
+        text: req.body.text
+      };
+      //console.log(mailOptions);
+      smtpTransport.sendMail(mailOptions, function(err, response) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(response);
+        });
 });
 
 examiners.get("/get_examiners_list", (req, res, next) => {
-  con.query("SELECT * FROM examiners", function(err, result, fields) {
-    if (err) return next(err);
-    return res.send(result);
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query("SELECT * FROM examiners", function(err, result, fields) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(result);
+      });
+    }
   });
+ 
 });
 
 examiners.delete("/delete_examiner/:id", (req, res, next) => {
-  con.query(
-    "delete from examiners where id = ? ",
-    req.params.id,
-    (err, result) => {
-      if(err) return next(err);
-      return res.send(result);
+  con.getConnection(function(err,conn){
+    if(err){
+      return next(err);
     }
-  );
+    else{
+      conn.query(
+        "delete from examiners where id = ? ",
+        req.params.id,
+        (err, result) => {
+          if(err) return next(err);
+          conn.release();
+          return res.send(result);
+        }
+      );
+    }
+  });
+ 
 });
 
 examiners.get('/get_internal_examiners/:code',(req, res, next)=>{
-
-  con.query('select name from examiners where type="internal" and Subject_Code=?',req.params.code, function(err, result, fields) {
-    
-    if (err) return next(err);
-    return res.send(result);
+  con.getConnection(function(err,conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query('select name from examiners where type="internal" and Subject_Code=?',req.params.code, function(err, result, fields) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(result);
+      });
+    }
   });
-
 });
 
 
 examiners.get('/get_external_examiners/:code',(req, res, next)=>{
-  con.query('select name from examiners where type="external" and Subject_Code=?',req.params.code, function(err, result, fields) {
-    
-    if (err) return next(err);
-    return res.send(result);
+  con.getConnection(function(err,conn){
+    if(err){
+      return next(err);
+    } 
+    else{
+      conn.query('select name from examiners where type="external" and Subject_Code=?',req.params.code, function(err, result, fields) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(result);
+      });
+    }
   });
+  
 });
-
-
 
 module.exports = examiners;

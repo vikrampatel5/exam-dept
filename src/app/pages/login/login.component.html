@@ -14,12 +14,12 @@
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" formControlName="email" [ngClass]="{
                   'has-danger': myform.controls.email.invalid && myform.controls.email.dirty, 
                   'has-success': myform.controls.email.valid && myform.controls.email.dirty 
-                }">
+                }" [(ngModel)]="loginDetails.uname">
                 <br>
                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password" [ngClass]="{
                   'has-danger': myform.controls.password.invalid && myform.controls.password.dirty, 
                   'has-success': myform.controls.password.valid && myform.controls.password.dirty 
-                }">
+                }" [(ngModel)]="loginDetails.pass">
                 <div class="form-control-feedback"
      *ngIf="myform.controls.password.errors && (myform.controls.password.dirty || myform.controls.password.touched)">
   <p *ngIf="myform.controls.password.errors.required">Password is required</p>
@@ -33,7 +33,7 @@
                 </small>
               </div>
               <br>
-              <button type="submit" class="btn btn-secondary btn-lg btn-block btn-dark myButton" routerLink="dashboard">Login</button>
+              <button type="submit" class="btn btn-secondary btn-lg btn-block btn-dark myButton" (click)="login()">Login</button>
               <br>
               
               <small>&copy;opyright 2018 @ S.G.S.I.T.S Indore</small>

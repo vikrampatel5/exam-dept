@@ -38,7 +38,7 @@ export class SubjectService {
     return this.http.delete('http://localhost:3000/subject/delete_subject/' + code)
       .map(
         res => {
-          console.log('Subject Code : ' + res.json().deleted + ' Successfully Deleted!!');
+          res.json();
         }
       );
   }
@@ -47,8 +47,7 @@ export class SubjectService {
     return this.http.post('http://localhost:3000/subject/upload_file', file)
       .map(
         res => {
-          console.log('File Uploaded : ' + res.json().affectedRows + ' Rows Inserted!!');
-          // res.json();
+          res.json();
         }
       );
   }

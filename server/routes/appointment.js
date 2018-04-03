@@ -7,21 +7,30 @@ var path = require('path');
 var app = express();
 
 app.get('/generate',function(req,res,next){
-    sql = "Select ae.ps_name, ae.subject_code, s.nomenclature, e.department, e.address FROM alloted_examiners AS ae JOIN examiners AS e on ae.subject_code = e.Subject_Code JOIN subjects AS s ON ae.subject_code = s.Code";
-    con.query(sql, (err, result, fields) => {
-        if(err) return next(err);
-        console.log(result);
-        for(var i=0; i< result.length; i++){
-            data = {
-                name: result[i].ps_name,
-                code: result[i].subject_code,
-                nomenclature: result[i].nomenclature,
-                dept: result[i].department,
-                address: result[i].address
-            }
-            generateLetter(data, i);
+    con.getConnection(function(err,conn){
+        if(err){
+            return next(err);
+        }
+        else{
+            sql = "Select ae.ps_name, ae.subject_code, s.nomenclature, e.department, e.address FROM alloted_examiners AS ae JOIN examiners AS e on ae.subject_code = e.Subject_Code JOIN subjects AS s ON ae.subject_code = s.Code";
+            con.query(sql, (err, result, fields) => {
+                if(err) return next(err);
+                // console.log(result);
+                for(var i=0; i< result.length; i++){
+                    data = {
+                        name: result[i].ps_name,
+                        code: result[i].subject_code,
+                        nomenclature: result[i].nomenclature,
+                        dept: result[i].department,
+                        address: result[i].address
+                    }
+                    generateLetter(data, i);
+                }
+                conn.release();
+            });
         }
     });
+   
     
 });
 

@@ -16,6 +16,8 @@ const EXCEL_EXTENSION = '.xlsx';
 
 
 export class SubjectsComponent implements OnInit {
+
+  
   subjects: SubjectItem[];
 
   subject = {
@@ -64,7 +66,7 @@ export class SubjectsComponent implements OnInit {
           const first_sheet_name = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[first_sheet_name];
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true});
-          this.subjectService.uploadFile(myFile).subscribe(res => this.getSubjects());
+          this.subjectService.uploadFile(myFile);
       };
       fileReader.readAsArrayBuffer(this.file);
     }

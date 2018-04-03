@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Validators, FormGroup, FormControl} from '@angular/forms';
+import { SignupService } from '../../services/signup.service';
 
 
 @Component({
@@ -9,7 +10,11 @@ import {Validators, FormGroup, FormControl} from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   myform: FormGroup;
-  constructor() { }
+  loginDetails = {
+    uname: '',
+    pass: ''
+  }
+  constructor(private signUpService: SignupService) { }
 
   ngOnInit() {
 
@@ -21,7 +26,7 @@ export class LoginComponent implements OnInit {
       ]),
       password: new FormControl('', [
           Validators.minLength(8), 
-          Validators.required
+          Validators.required,
       ]),
       language: new FormControl()
   });
@@ -29,7 +34,8 @@ export class LoginComponent implements OnInit {
 
   login()
   {
-    console.log("working");
+    console.log(this.loginDetails);
+    this.signUpService.getUser(this.loginDetails).subscribe();
   }
 
 }

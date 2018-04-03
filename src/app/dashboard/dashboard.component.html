@@ -7,10 +7,10 @@
           <strong>EP</strong>
         </div>
         <ul class="list-unstyled components">
-          <li class="active">
-            <a class="link" href="#homeSubmenu">
+         <li>
+            <a class="link" [routerLink]="[{ outlets: { sub: ['home']}}]">
               <i class="fas fa-home"></i>
-              Home
+            Home
             </a>
           </li>
           <li>
@@ -87,7 +87,6 @@
                 </div>
             </div>
         </nav>
-
         <div class="col-12">
             <router-outlet name="sub"></router-outlet>
         </div>

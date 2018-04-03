@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ExaminerService } from '../services/examiner.service';
 import * as XLSX from 'xlsx';
-import { ExaminerItem } from '../services/examiner.service';
+import { ExaminerItem } from '../services/examiner.service'
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -77,6 +77,8 @@ private examiners: ExaminerItem[];
     this.examiner.name = examiner.name;
     this.examiner.subject_code = examiner.subject_code,
     this.examiner.address = examiner.address;
+    this.examiner.email = examiner.email;
+    this.examiner.contact = examiner.contact;
     this.examiner.department = examiner.department;
     this.examiner.type = examiner.type;
     $('#entry').val('Update');

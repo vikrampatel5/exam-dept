@@ -47,7 +47,7 @@ export class AllotedService {
     return this.http.delete('http://localhost:3000/alloted/delete_alloted/' + scode)
       .map(
         res => {
-          console.log('Alloted Examiner For Subject Code ' + res.json().scode + ' is Deleted!!');
+          res.json();
         }
       );
   }

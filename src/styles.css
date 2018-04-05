@@ -116,3 +116,16 @@ td {
     opacity:1; 
 }
 
+.small{
+    color:#cf1f00;
+}
+
+.has-error{
+    border: red 1px solid;
+    box-shadow: 2px -1px 3px red;
+    transition: all 1s ease-in;
+}
+
+.has-success{
+    transition: all 1s ease;
+}

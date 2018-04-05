@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
+import {Validators, FormGroup, FormControl} from '@angular/forms';
 import { HttpModule, Headers } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -17,6 +18,7 @@ export class ExaminersComponent implements OnInit {
 
 private examiners: ExaminerItem[];
 
+  myform: FormGroup;
   examiner = {
     id : '',
     name : '',
@@ -43,7 +45,49 @@ private examiners: ExaminerItem[];
   ngOnInit() {
     // Fetch All Examiners
     this.getExaminers();
+
+    this.myform = new FormGroup({
+
+      email: new FormControl('', [ 
+          Validators.required,
+          Validators.email
+      ]),
+      name: new FormControl('', [ 
+          Validators.required
+      ]),
+      address: new FormControl('', [ 
+          Validators.required
+      ]),
+      scode: new FormControl('', [
+          Validators.required
+      ]),
+      department: new FormControl('', [
+          Validators.required
+      ]),
+      type: new FormControl(0, [
+          Validators.required
+      ]),
+      contact: new FormControl('', [
+          Validators.minLength(10),
+          Validators.required
+      ])
+  });
   }
+
+  isValid(field: string) {
+    return !this.myform.get(field).valid && this.myform.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    if(this.isValid(field)){
+      return 'has-error';
+    }
+    else if(!this.isValid(field)){
+      return 'has-success';
+    }
+    else return ''
+  }
+
 
   getExaminers() {
     this.examinerService.getExaminers().subscribe(res => this.examiners = res);
@@ -145,5 +189,7 @@ private examiners: ExaminerItem[];
       XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
       XLSX.writeFile(wb, fn || ('Examiners.' + (type || 'xlsx')));
   }
+
+  
 
 }

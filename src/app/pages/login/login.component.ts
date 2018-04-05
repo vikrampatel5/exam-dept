@@ -22,15 +22,30 @@ export class LoginComponent implements OnInit {
 
       email: new FormControl('', [ 
           Validators.required,
-          Validators.pattern("[^ @]*@[^ @]*") 
+          Validators.email
       ]),
       password: new FormControl('', [
           Validators.minLength(8), 
-          Validators.required,
+          Validators.required
       ]),
       language: new FormControl()
   });
   }
+
+  isValid(field: string) {
+    return !this.myform.get(field).valid && this.myform.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    if(this.isValid(field)){
+      return 'has-error';
+    }
+    else if(!this.isValid(field)){
+      return 'has-success';
+    }
+    else return ''
+  }
+  
 
   login()
   {

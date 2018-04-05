@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Validators, FormGroup, FormControl} from '@angular/forms';
 import { SignupService } from '../../services/signup.service';
-
 
 @Component({
   selector: 'app-signup',
@@ -9,19 +9,55 @@ import { SignupService } from '../../services/signup.service';
 })
 export class SignupComponent implements OnInit {
 
+ myform: FormGroup;
  clerk = {
-  id : '',
-  name : '',
-  email : '',
-  password : '',
-  cpassword : ''
+  id : null,
+  name : null,
+  email : null,
+  password : null,
+  cpassword : null
  }
   constructor(private signUpService: SignupService ) { }
 
   ngOnInit() {
+
+    this.myform = new FormGroup({
+
+
+      name: new FormControl('', [ 
+        Validators.required
+      ]),
+      eid: new FormControl('', [ 
+        Validators.required
+      ]),
+      email: new FormControl('', [ 
+          Validators.required,
+          Validators.email
+      ]),
+      password: new FormControl('', [
+          Validators.required
+      ]),
+      cpassword: new FormControl('', [
+          Validators.required
+      ])
+  });
   }
 
-  addClerk() {
-    this.signUpService.addClerk(this.clerk);
+  isValid(field: string) {
+    return !this.myform.get(field).valid && this.myform.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    if(this.isValid(field)){
+      return 'has-error';
+    }
+    else if(!this.isValid(field)){
+      return 'has-success';
+    }
+    else return ''
+  }
+
+  addUser() {
+    this.signUpService.addUser(this.clerk).subscribe();
   }
 }

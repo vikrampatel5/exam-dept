@@ -5,40 +5,47 @@
         <a class="close-x quit" (click)="closex()">X</a>
       </label>
       <h4>Enter Following Details</h4>
-      <form (ngSubmit)="addDetail()">
+      <form (ngSubmit)="addDetail()" [formGroup]="myform" novalidate>
 
         <label for="ex_name">Examiner Name: </label>
         <input type="text" class="form-control" name="name" id="ex_name" placeholder="Examiner Name" [(ngModel)]="examiner.name"
-          required>
+        formControlName="name" [ngClass]="displayFieldCss('name')">
+        <p class="small" *ngIf="isValid('name')">Examiner Name is Mandatory</p>
 
         <label for="sub">Subject Code: </label>
         <input type="text" class="form-control" name="sub" id="sub" placeholder="Subject Code" [(ngModel)]="examiner.subject_code"
-          required>
+        formControlName="scode" [ngClass]="displayFieldCss('scode')">
+        <p class="small" *ngIf="isValid('scode')">Subject Code is Mandatory</p>
 
         <label for="dept">Department: </label>
         <input type="text" class="form-control" name="department" id="dept" placeholder="Department" [(ngModel)]="examiner.department"
-          required>
+        formControlName="department" [ngClass]="displayFieldCss('department')">
+        <p class="small" *ngIf="isValid('department')">Department is Mandatory</p>
 
         <label for="address">Address: </label>
         <input type="text" class="form-control" name="address" id="address" placeholder="Address" [(ngModel)]="examiner.address"
-          required>
+        formControlName="address" [ngClass]="displayFieldCss('address')">
+        <p class="small" *ngIf="isValid('address')">Address is Mandatory</p>
 
         <label for="CustomSelect">Type: </label>
-        <select class="form-control custom-select" name="type" id="CustomSelect" [(ngModel)]="examiner.type">
+        <select class="form-control custom-select" name="type" id="CustomSelect" [(ngModel)]="examiner.type" formControlName="type" [ngClass]="displayFieldCss('type')">
           <option selected disabled>Choose Type</option>
           <option value="Internal">Internal</option>
           <option value="External">External</option>
         </select>
+        <p class="small" *ngIf="isValid('type')">Select Examiner Type</p>
 
         <label for="email">Email: </label>
-        <input type="text" class="form-control" name="email" id="email" placeholder="Email" [(ngModel)]="examiner.email" required>
+        <input type="text" class="form-control" name="email" id="email" placeholder="Email" [(ngModel)]="examiner.email" formControlName="email" [ngClass]="displayFieldCss('email')">
+        <p class="small" *ngIf="isValid('email')">Enter Valid Email Address</p>
 
         <label for="contact">Contact: </label>
         <input type="text" class="form-control" name="contact" id="contact" placeholder="Contact" [(ngModel)]="examiner.contact"
-          required>
+        formControlName="contact" [ngClass]="displayFieldCss('contact')"> 
+        <p class="small" *ngIf="isValid('contact')">Enter Valid Contact Number</p>
 
         <br>
-        <input type="submit" value="Add" id="entry" class="btn btn-block btn-dark btn-lg btn-secondary">
+        <input type="submit" value="Add" id="entry" [disabled]="myform.invalid" class="btn btn-block btn-dark btn-lg btn-secondary">
       </form>
     </div>
   </div>

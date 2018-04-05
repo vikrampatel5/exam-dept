@@ -13,8 +13,19 @@
         <p class="small" *ngIf="isValid('name')">Examiner Name is Mandatory</p>
 
         <label for="sub">Subject Code: </label>
-        <input type="text" class="form-control" name="sub" id="sub" placeholder="Subject Code" [(ngModel)]="examiner.subject_code"
+        <input list="codes" type="text" class="form-control" name="sub" id="sub" placeholder="Subject Code" [(ngModel)]="examiner.subject_code"
         formControlName="scode" [ngClass]="displayFieldCss('scode')">
+
+        <datalist id="codes">
+            <option value="{{value.Code}}" *ngFor="let value of subjects"></option>
+        </datalist>
+        <!-- <div>
+          <li *ngFor="subject in (subjects | filter:search)" [value]="subject.Code">{{subject.Code}}</li>
+        </div> -->
+        <!-- <select class="form-control custom-select" name="sub" id="sub" [(ngModel)]="examiner.subject_code" formControlName="scode" [ngClass]="displayFieldCss('scode')">
+          <option selected disabled>Choose Type</option>
+          <option value="{{value.Code}}" *ngFor="let value of subjects">{{value.Code}}</option>
+        </select> -->
         <p class="small" *ngIf="isValid('scode')">Subject Code is Mandatory</p>
 
         <label for="dept">Department: </label>
@@ -29,7 +40,7 @@
 
         <label for="CustomSelect">Type: </label>
         <select class="form-control custom-select" name="type" id="CustomSelect" [(ngModel)]="examiner.type" formControlName="type" [ngClass]="displayFieldCss('type')">
-          <option selected disabled>Choose Type</option>
+          <option [disabled]="true" [selected]="true">Choose Type</option>
           <option value="Internal">Internal</option>
           <option value="External">External</option>
         </select>

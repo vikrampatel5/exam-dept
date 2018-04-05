@@ -4,9 +4,10 @@ import {Validators, FormGroup, FormControl} from '@angular/forms';
 import { HttpModule, Headers } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { ExaminerService } from '../services/examiner.service';
+import { ExaminerService, ExaminerItem } from '../services/examiner.service';
 import * as XLSX from 'xlsx';
-import { ExaminerItem } from '../services/examiner.service'
+import { SubjectService, SubjectItem } from '../services/subject.service';
+
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -19,6 +20,7 @@ export class ExaminersComponent implements OnInit {
 private examiners: ExaminerItem[];
 
   myform: FormGroup;
+  subjects: SubjectItem[];
   examiner = {
     id : '',
     name : '',
@@ -39,25 +41,25 @@ private examiners: ExaminerItem[];
   this.file = event.target.files[0];
   }
   //
-  constructor(private http: HttpClient, private router: RouterModule, private examinerService: ExaminerService) {
+  constructor(private http: HttpClient,
+    private router: RouterModule,
+    private examinerService: ExaminerService,
+    private subjectService: SubjectService) {
   }
 
   ngOnInit() {
-    // Fetch All Examiners
+    // Fetch All Examiners & Subject Codes
     this.getExaminers();
+    this.getCodes();
 
     this.myform = new FormGroup({
 
-      email: new FormControl('', [ 
+      email: new FormControl('', [
           Validators.required,
           Validators.email
       ]),
-      name: new FormControl('', [ 
-          Validators.required
-      ]),
-      address: new FormControl('', [ 
-          Validators.required
-      ]),
+      name: new FormControl('', [Validators.required]),
+      address: new FormControl('', [Validators.required]),
       scode: new FormControl('', [
           Validators.required
       ]),
@@ -74,20 +76,24 @@ private examiners: ExaminerItem[];
   });
   }
 
+  getCodes() {
+    this.subjectService.getSubjects().subscribe(res => this.subjects = res);
+  }
+
   isValid(field: string) {
     return !this.myform.get(field).valid && this.myform.get(field).touched;
   }
 
   displayFieldCss(field: string) {
-    if(this.isValid(field)){
+    if (this.isValid(field)) {
       return 'has-error';
     }
-    else if(!this.isValid(field)){
+    if (!this.isValid( field )) {
       return 'has-success';
-    }
-    else return ''
+    }else {
+       return '';
+     }
   }
-
 
   getExaminers() {
     this.examinerService.getExaminers().subscribe(res => this.examiners = res);

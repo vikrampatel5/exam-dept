@@ -14,7 +14,7 @@ import * as XLSX from 'xlsx';
 })
 export class AllotedComponent implements OnInit {
 
-  alloted_examiners : AllotedItem[];
+  alloted_examiners: AllotedItem[];
   allot = {
     subject_code: '',
     internal_examiner: '',

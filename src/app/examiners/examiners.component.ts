@@ -77,7 +77,9 @@ private examiners: ExaminerItem[];
   }
 
   getCodes() {
-    this.subjectService.getSubjects().subscribe(res => this.subjects = res);
+    this.subjectService.getSubjects().subscribe(res => {
+      this.subjects = res;
+    });
   }
 
   isValid(field: string) {

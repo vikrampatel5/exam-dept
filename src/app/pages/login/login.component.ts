@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Validators, FormGroup, FormControl} from '@angular/forms';
-import { SignupService } from '../../services/signup.service';
+import { UserService } from '../../services/users.service';
 
 
 @Component({
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
     uname: '',
     pass: ''
   }
-  constructor(private signUpService: SignupService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
 
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   login()
   {
     console.log(this.loginDetails);
-    this.signUpService.getUser(this.loginDetails).subscribe();
+    this.userService.getUser(this.loginDetails).subscribe();
   }
 
 }

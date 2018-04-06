@@ -18,7 +18,7 @@ export class UserItem {
   ) {}
 }
 @Injectable()
-export class SignupService {
+export class UserService {
 
   public users: UserItem[];
 

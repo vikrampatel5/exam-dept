@@ -49,7 +49,7 @@
     <table class="table table-striped table-bordered table-sm">
       <thead class="table-dark">
         <tr>
-          <th> <input type="checkbox" name="all" [checked]="isAllChecked()" (change)="checkAll($event)"/></th>
+          <th> <input type="checkbox" name="all" [(ngModel)]="selectedAll" (change)="selectAll(); checkIfAllSelected();"/></th>
           <th>#</th>
           <th>Subject Code</th>
           <th>Internal Examiner</th>
@@ -60,7 +60,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 5, currentPage: p}; let idx = index">
-          <td> <input type="checkbox" name="allotedcb[]" value="{{alloted.subject_code}}" [(ngModel)]="alloted.state"></td>
+          <td> <input type="checkbox" name="cb" value="{{alloted.subject_code}}" [(ngModel)]="alloted['selected']" (click)="toggleSelection(alloted.subject_code)"></td>
           <th scope="row">{{idx+1}}</th>
           <td>{{alloted.subject_code}}</td>
           <td>{{alloted.internal_examiner}}</td>
@@ -78,7 +78,6 @@
               <div class="col-4" *ngIf="!alloted.ps_name">
                   <button (click)="updateAlloted(alloted)" class="btn btn-sm btn-outline-success">Update</button>
               </div> 
-              
             </div>
           </div>
           </td>

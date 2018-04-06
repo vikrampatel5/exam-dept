@@ -22,8 +22,9 @@ import { SubjectService } from './services/subject.service';
 import { Http, HttpModule } from '@angular/http';
 import { AllotedService } from './services/alloted.service';
 import { PaperRecievedComponent } from './paper-recieved/paper-recieved.component';
-import { SignupService } from './services/signup.service';
+import { UserService } from './services/users.service';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
+import { UsersComponent } from './users/users.component';
 
 
 const appRoutes: Routes = [
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
       {path: '', component: DashboardHomeComponent, outlet:'sub'},
       {path: 'home', component: DashboardHomeComponent, outlet:'sub'},
       {path: 'alloted', component: AllotedComponent, outlet: 'sub'},
+    //  {path: 'users', component: , outlet: 'sub'},
       {path: 'examiners', component: ExaminersComponent, outlet: 'sub'},
       {path: 'registerClerk', component: SignupComponent, outlet: 'sub'},
       {path: 'notification', component: NotificationComponent, outlet: 'sub'},
@@ -65,7 +67,8 @@ const appRoutes: Routes = [
     HelpComponent,
     SubjectsComponent,
     PaperRecievedComponent,
-    DashboardHomeComponent
+    DashboardHomeComponent,
+    UsersComponent
   ],
   imports: [
     FormsModule,
@@ -76,7 +79,7 @@ const appRoutes: Routes = [
     NgxPaginationModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ExaminerService, SubjectService, AllotedService, SignupService],
+  providers: [ExaminerService, SubjectService, AllotedService, UserService],
   exports: [
     FilterPipe
   ],

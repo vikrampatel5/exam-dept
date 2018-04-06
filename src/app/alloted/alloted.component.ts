@@ -6,6 +6,7 @@ import { SubjectService, SubjectItem } from '../services/subject.service';
 import { AllotedService, AllotedItem } from '../services/alloted.service';
 import * as $ from 'jquery';
 import * as XLSX from 'xlsx';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-alloted',
@@ -14,6 +15,7 @@ import * as XLSX from 'xlsx';
 })
 export class AllotedComponent implements OnInit {
 
+  selectedAll: any;
   alloted_examiners: AllotedItem[];
   allot = {
     subject_code: '',
@@ -24,6 +26,7 @@ export class AllotedComponent implements OnInit {
 
   ps_name: '';
 
+  selection = [];
 
   subjects: SubjectItem[];
   internal_examiners: any;
@@ -39,8 +42,12 @@ export class AllotedComponent implements OnInit {
     this.getAlloted();
   }
 
+  
+
   getCodes() {
-    this.subjectService.getSubjects().subscribe(res => this.subjects = res);
+    this.subjectService.getSubjects().subscribe(res => {
+      this.subjects = res;
+    });
   }
 
 
@@ -49,7 +56,13 @@ export class AllotedComponent implements OnInit {
   }
 
   getAlloted() {
-    this.allotedService.getAlloted().subscribe(res => this.alloted_examiners = res);
+    this.allotedService.getAlloted().subscribe(res => {
+      this.alloted_examiners = res;
+      for (let i = 0; i < this.alloted_examiners.length; i++) { 
+        this.alloted_examiners[i]['selected']=false;
+      } 
+      // console.log(this.alloted_examiners);
+    });
   }
 
   deleteAlloted(scode) {
@@ -83,8 +96,35 @@ myFunction(code){
 
   // Select All Feature to be imeplemented  //
 
-  isAllChecked(){}
-  checkAll(){}
+  toggleSelection(scode){
+    const idx = this.selection.indexOf(scode);
+    if(idx > -1){
+      this.selection.splice(idx,1);
+      this.alloted_examiners[idx]['selected'] = false;
+    }
+    else{
+      this.selection.push(scode);
+      const idx = this.selection.indexOf(scode);
+      this.alloted_examiners[idx]['selected'] = true;
+    }
+    console.log(this.selection);
+  }
+
+  selectAll() {
+    this.selection = [];
+    for (var i = 0; i < this.alloted_examiners.length; i++) {
+      this.alloted_examiners[i]['selected'] = this.selectedAll;
+      if(this.alloted_examiners[i]['selected'])
+        this.selection.push(this.alloted_examiners[i].subject_code);
+
+    }
+    console.log(this.selection);
+  }
+  checkIfAllSelected() {
+    this.selectedAll = this.alloted_examiners.every(function(item:any) {
+        return item['selected'] == true;
+      })
+  }
 
   /**********************/ 
 }

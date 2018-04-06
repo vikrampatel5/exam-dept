@@ -14,7 +14,8 @@ users.post('/addUser', (req, res, next) => {
                 id : req.body.id,
                 name : req.body.name,
                 email : req.body.email,
-                password : req.body.password
+                password : req.body.password,
+                role : req.body.role
             }
             console.log(data);
             conn.query('Insert into users SET ?',data, function(error, results, fields){

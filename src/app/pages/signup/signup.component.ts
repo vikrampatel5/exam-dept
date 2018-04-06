@@ -15,7 +15,8 @@ export class SignupComponent implements OnInit {
   name : null,
   email : null,
   password : null,
-  cpassword : null
+  cpassword : null,
+  role: null
  }
   constructor(private userService: UserService ) { }
 
@@ -39,7 +40,10 @@ export class SignupComponent implements OnInit {
       ]),
       cpassword: new FormControl('', [
           Validators.required
-      ])
+      ]),
+      role: new FormControl('', [
+        Validators.required
+    ])
   });
   }
 

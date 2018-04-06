@@ -14,7 +14,8 @@ export class UserItem {
   constructor(
     public id: string,
     public name: string,
-    public email: string
+    public email: string,
+    public role: string
   ) {}
 }
 @Injectable()
@@ -30,8 +31,7 @@ export class UserService {
     return this.http.post('http://localhost:3000/users/addUser', clerk)
       .map( res => 
         {
-        console.log(clerk + "added");
-        // res.json();
+        alert('User Added');
       });
 
   }
@@ -54,11 +54,12 @@ export class UserService {
     return this.ht.get('http://localhost:3000/users/getAllUsers')
     .map(res => {
       return res.json().map(item => {
-         console.log(item);
+        // console.log(item);
          return new UserItem(
            item.id,
            item.name,
-           item.email
+           item.email,
+           item.role
          );
        });
     })

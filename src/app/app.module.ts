@@ -39,7 +39,7 @@ const appRoutes: Routes = [
       {path: '', component: DashboardHomeComponent, outlet:'sub'},
       {path: 'home', component: DashboardHomeComponent, outlet:'sub'},
       {path: 'alloted', component: AllotedComponent, outlet: 'sub'},
-    //  {path: 'users', component: , outlet: 'sub'},
+      {path: 'users', component: UsersComponent, outlet: 'sub'},
       {path: 'examiners', component: ExaminersComponent, outlet: 'sub'},
       {path: 'registerClerk', component: SignupComponent, outlet: 'sub'},
       {path: 'notification', component: NotificationComponent, outlet: 'sub'},

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-2"></div>
     <div class="col-8">
-        <h4>Register A Clerk</h4>
+        <h4>Register A User</h4>
         <form (submit)="addUser()" [formGroup]="myform">
         <label for="Input4">Employee ID: </label>
         <input type="text" class="form-control" name="eid" id="Input4" placeholder="Employee ID" [(ngModel)]="clerk.id" formControlName="eid" [ngClass]="displayFieldCss('eid')">
@@ -23,6 +23,16 @@
         <label for="Input4">Confirm Password: </label>
         <input type="text" class="form-control" name="cpassword" id="Input4" placeholder="Enter Password Again" [(ngModel)]="clerk.cpassword" formControlName="cpassword" [ngClass]="displayFieldCss('cpassword')">
         <p class="small" *ngIf="isValid('cpassword')">Enter Password same as Password used above</p>
+
+        <label for="Input4">Role </label>
+        <select class="form-control custom-select" name="type" id="CustomSelect" [(ngModel)]="examiner.type" formControlName="type" [ngClass]="displayFieldCss('type')">
+          <option [disabled]="true" [selected]="true">Choose Type</option>
+          <option value="Admin">Admin</option>
+          <option value="Clerk">Clerk</option>
+          <option value="QP">QP</option>
+        </select>
+        <!-- <p class="small" *ngIf="isValid('type')">Select Examiner Type</p> -->
+        
         <br>
         <br>
         <input type="submit" value="Register" class="btn btn-dark btn-secondary btn-lg  btn-block quit" [disabled]="myform.invalid">

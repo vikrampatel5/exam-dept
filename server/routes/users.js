@@ -62,4 +62,24 @@ users.get("/getAllUsers", (req, res, next) => {
     });
 });
 
+users.delete("/deleteUser/:id", (req, res, next) => {
+    con.getConnection(function(err,conn){
+      if(err){
+        return next(err);
+      }
+      else{
+        conn.query(
+          "delete from users where id = ? ",
+          req.params.id,
+          (err, result) => {
+            if(err) return next(err);
+            conn.release();
+            return res.send(result);
+          }
+        );
+      }
+    });
+   
+  });
+
 module.exports = users;

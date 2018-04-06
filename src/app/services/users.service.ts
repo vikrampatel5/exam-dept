@@ -54,7 +54,7 @@ export class UserService {
     return this.ht.get('http://localhost:3000/users/getAllUsers')
     .map(res => {
       return res.json().map(item => {
-        // console.log(item);
+         console.log(item);
          return new UserItem(
            item.id,
            item.name,
@@ -62,5 +62,14 @@ export class UserService {
          );
        });
     })
+  }
+
+  deleteUser(id){
+    return this.http.delete('http://localhost:3000/users/deleteUser/' + id)
+      .map(
+        res => {
+          return {message: 'Deletion of User was Successful'}
+        }
+      );
   }
 }

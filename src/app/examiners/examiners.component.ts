@@ -208,6 +208,4 @@ private examiners: ExaminerItem[];
       XLSX.writeFile(wb, fn || ('Examiners.' + (type || 'xlsx')));
   }
 
-  
-
 }

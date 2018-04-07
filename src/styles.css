@@ -96,23 +96,27 @@ td {
     font-family: 'roboto';
 }
 
+.uploader-wrapper{
+    border-radius:4px;
+    border:#ebebeb solid 1px;
+    width: 60%;
+    margin: auto 0;
 
+} 
 .uploader{
     position:relative;
     display:inline-block;    
 	border-radius:4px;
-    border:#ebebeb solid 1px;
+    /* border:#ebebeb solid 5px; */
     width: 90%; 
-    padding: 4px 6px 4px 8px;
+    /* padding: 4px 6px 4px 8px; */
     font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
     color: #7f7f7f;
-	background:white
+	background:white;
 }
 .uploader input[type="file"]{
     -webkit-appearance:none;
-    position:absolute;
-    margin-top: 3px;
-    top:0; left:0;
+    /* margin-top:2%; */
     opacity:1; 
 }
 
@@ -128,4 +132,59 @@ td {
 
 .has-success{
     transition: all 1s ease;
+}
+
+
+/*  Form Modal */ 
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99;
+    background: #000;
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+}
+
+.overlay_on{
+    pointer-events: auto;
+    opacity: 0.9;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: transform 0.5s ease, opacity 0.5 ease;
+    transition: transform 0.5s ease, opacity 0.5 ease;
+} 
+.modal_form{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+    transform: translate(-50%, -50%) scale(0.5);
+    width: 100%;
+    max-width: 640px;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.modal_form_on{
+    pointer-events: auto;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transition-delay: 0.1s;
+}
+
+.modal__content{
+    display: block;
+    padding: 40px;
+    background: white;
+}
+
+.close-x{
+    cursor: pointer;
+    font-weight: bold;
 }

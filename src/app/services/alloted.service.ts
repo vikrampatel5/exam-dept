@@ -47,7 +47,7 @@ export class AllotedService {
     return this.http.delete('http://localhost:3000/alloted/delete_alloted/' + scode)
       .map(
         res => {
-          res.json();
+          return res.json();
         }
       );
   }

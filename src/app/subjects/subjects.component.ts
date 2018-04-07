@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { SubjectService, SubjectItem } from '../services/subject.service';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
@@ -18,6 +20,7 @@ const EXCEL_EXTENSION = '.xlsx';
 export class SubjectsComponent implements OnInit {
 
   
+  myform: FormGroup;
   subjects: SubjectItem[];
 
   subject = {
@@ -39,10 +42,29 @@ export class SubjectsComponent implements OnInit {
 
   ngOnInit() {
       this.getSubjects();
+
+      this.myform = new FormGroup({
+
+        scode: new FormControl('', [
+            Validators.required
+        ]),
+        sNomen: new FormControl('', [Validators.required]),
+        group: new FormControl('', [Validators.required]),
+       });
   }
 
   addSCode() {
-    this.subjectService.addSCode(this.subject).subscribe(res => this.getSubjects());
+    this.subjectService.addSCode(this.subject).subscribe(res => {
+      if(res.status==false){
+        alert('Error Inserting: '+res.message);
+      }
+      else{
+        this.getSubjects()
+        alert('Message: '+res.message);
+      }
+      
+    });
+    this.closex();
   }
 
   getSubjects() {
@@ -78,5 +100,48 @@ export class SubjectsComponent implements OnInit {
     XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
     XLSX.writeFile(wb, fn || ('Subjects.' + (type || 'xlsx')));
 }
+
+// Modal Window functions
+openAddWindow() {
+  this.subject.Code = '';
+  this.subject.Nomenclature = '';
+  this.subject.group_id = '';
+
+  $('#entry').val('Add');
+  $('.modal_form').toggleClass('modal_form_on');
+  $('.overlay').toggleClass('overlay_on');
+
+  }
+
+  closex() {
+    $('.modal_form').toggleClass('modal_form_on');
+    $('.overlay').toggleClass('overlay_on');
+  }
+
+
+  openEditWindow(subject) {
+    this.subject.Code= subject.code,
+    this.subject.Nomenclature = subject.Nomenclature;
+    this.subject.group_id = subject.group_id,
+    $('#entry').val('Update');
+    $('.modal_form').toggleClass('modal_form_on');
+    $('.overlay').toggleClass('overlay_on');
+  }
+
+  isValid(field: string) {
+    return !this.myform.get(field).valid && this.myform.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    if (this.isValid(field)) {
+      return 'has-error';
+    }
+    if (!this.isValid( field )) {
+      return 'has-success';
+    }else {
+       return '';
+     }
+  }
+
 
 }

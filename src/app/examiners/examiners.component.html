@@ -51,12 +51,12 @@
         <p class="small" *ngIf="isValid('email')">Enter Valid Email Address</p>
 
         <label for="contact">Contact: </label>
-        <input type="text" class="form-control" name="contact" id="contact" placeholder="Contact" [(ngModel)]="examiner.contact"
+        <input type="number" class="form-control" name="contact" id="contact" placeholder="Contact" [(ngModel)]="examiner.contact"
         formControlName="contact" [ngClass]="displayFieldCss('contact')"> 
         <p class="small" *ngIf="isValid('contact')">Enter Valid Contact Number</p>
 
         <br>
-        <input type="submit" value="Add" id="entry" [disabled]="myform.invalid" class="btn btn-block btn-dark btn-lg btn-secondary">
+        <input type="submit" value="Add" id="entry" [disabled]="myform.invalid" class="btn btn-block btn-outline-success">
       </form>
     </div>
   </div>
@@ -84,7 +84,6 @@
     </div>
     <div class="col-3 input-group nopadding">
       <div class="uploader">
-          <span>Choose File</span>
         <input type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">
       </div>
       &nbsp;

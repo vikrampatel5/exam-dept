@@ -15,9 +15,14 @@ subjects.post("/add_subject", (req, res, next) => {
           result,
           fields
         ) {
-          if (err) return next(err);
+          if (err) {
+            if(err.errno == 1062){
+              return res.send({status:false,message:"Duplicate Entry Error"});
+            }
+            return next(err)
+          };
           conn.release();
-          return res.send(req.body);
+          return res.send({status:true,message:"Subject Code Added Succefully"});
         });
       }
     });

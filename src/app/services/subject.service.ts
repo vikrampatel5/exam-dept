@@ -29,7 +29,8 @@ export class SubjectService {
     return this.http.post('http://localhost:3000/subject/add_subject', subject)
       .map(
         res => {
-          res.json();
+          this.getSubjects();
+          return res.json();
         }
       );
   }
@@ -38,7 +39,7 @@ export class SubjectService {
     return this.http.delete('http://localhost:3000/subject/delete_subject/' + code)
       .map(
         res => {
-          res.json();
+          return res.json();
         }
       );
   }
@@ -49,7 +50,7 @@ export class SubjectService {
       .map(
         res => {
           console.log(res);
-          res.json();
+          return res.json();
         }
       );
   }
@@ -66,14 +67,5 @@ export class SubjectService {
           },
         );
   }
-
-  private handleError(error: any) {
-    const errMsg = error.message
-      ? error.message
-      : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    console.log(errMsg); // log to console instead
-    return Observable.throw(errMsg);
-  }
-
 
 }

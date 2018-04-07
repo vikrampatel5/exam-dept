@@ -44,9 +44,11 @@ export class SubjectService {
   }
 
   uploadFile(file) {
+    // console.log(file);
     return this.http.post('http://localhost:3000/subject/upload_file', file)
       .map(
         res => {
+          console.log(res);
           res.json();
         }
       );

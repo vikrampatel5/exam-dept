@@ -42,13 +42,13 @@ subjects.post("/add_subject", (req, res, next) => {
         return next(err);
       }
       else{
-        //console.log(req.body);
+    // console.log(req.body);
     //var values = req.body;
     var data = ObjToArray(req.body);
     //var data = [];
 
     // console.log(data);
-    conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ?", [data], function(
+    conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ? ON DUPLICATE KEY UPDATE Code=Code", [data], function(
       err,
       result
     ) {

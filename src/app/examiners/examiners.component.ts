@@ -156,15 +156,21 @@ private examiners: ExaminerItem[];
 
   addExaminer() {
     this.examinerService.addExaminer(this.examiner).subscribe(res => {
-      console.log(res);
-      this.getExaminers();
+      if(res.status==false){
+        alert('Error Inserting: '+res.message);
+      }
+      else{
+        this.getExaminers();
+        alert('Message: '+res.message);
+      }
+      
     });
     this.closex();
   }
 
   editExaminer() {
     this.examinerService.updateExaminer(this.examiner).subscribe(res => {
-      console.log(res);
+      
       this.getExaminers();
     });
     this.closex();
@@ -185,7 +191,11 @@ private examiners: ExaminerItem[];
           // console.log(worksheet);
           // console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-          this.examinerService.uploadFile(myFile);
+          this.examinerService.uploadFile(myFile).subscribe(res=>{
+            if(res.status==false){
+              alert("Error While Uploading: "+res.message);
+            }
+          });
       };
       fileReader.readAsArrayBuffer(this.file);
     }

@@ -25,10 +25,14 @@ examiners.post("/add_examiner", (req, res, next) => {
         result,
         fields
       ) {
-        if (err) return next(err);
+        if (err) {
+          if(err.errno == 1452){
+            return res.send({status:false,message:"Please Insert Valid Subject Code Or Add Subject Code First"});
+          }
+          return next(err)
+        };
         conn.release();
-        return res.send(req.body);
-        
+        return res.send({status:true,message:"Examiner Inserted Succefully"});
       });
     }
   });
@@ -47,10 +51,13 @@ examiners.post("/upload_file", (req, res, next) => {
     err,
     result
   ) {
-    if (err) return next(err);
+    if (err){
+      if(err.errno == 1452){
+        return res.send({status: false, message:"Please Check Your File, All Subject Codes Should be Valid"})
+      }
+    }
     conn.release();
     return res.send(req.body);
-    
   });
     }
   });

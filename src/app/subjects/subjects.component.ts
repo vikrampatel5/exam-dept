@@ -66,7 +66,7 @@ export class SubjectsComponent implements OnInit {
           const first_sheet_name = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[first_sheet_name];
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true});
-          this.subjectService.uploadFile(myFile);
+          this.subjectService.uploadFile(myFile).subscribe();
       };
       fileReader.readAsArrayBuffer(this.file);
     }

@@ -96,6 +96,14 @@ td {
     font-family: 'roboto';
 }
 
+.export-wrapper{
+    float: right;
+    width: 10%;
+    display: block;
+    cursor: pointer;
+}
+
+
 .uploader-wrapper{
     border-radius:4px;
     border:#ebebeb solid 1px;

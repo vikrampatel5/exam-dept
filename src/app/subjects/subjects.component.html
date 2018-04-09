@@ -29,7 +29,7 @@
   <h4>Manage Subject Codes</h4>
   <hr>
   <div class="row">
-    <div class="col-5">
+    <div class="col-4">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-addon">
@@ -45,16 +45,13 @@
         <a id="add" class="btn btn-dark text-white" (click)="openAddWindow()">Add Subject Code</a>
       </label>
     </div>
-    <div class="col-3 input-group nopadding">
+    <div class="col-6 input-group">
       <div class="uploader">
           <input type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">
       </div>
       <div style="z-index: 1;">
         <button type="button" class="btn btn-sm btn-outline-success" (click)="Upload()">Upload</button>
       </div>
-    </div>
-    <div class="col-2">
-        <input type="button" class="btn btn-block btn-sm btn-outline-success" (click)="doit('xlsx')" value="Export">
     </div>
 
   </div>
@@ -84,5 +81,8 @@
       </tbody>
     </table>
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <div class="export-wrapper">
+      <input type="button" class="btn btn-block btn-sm btn-outline-success" (click)="doit('xlsx')" value="Export">
+    </div>
   </div>
 </div>

@@ -1,45 +1,46 @@
 <div class="col-12">
   <h4>Allot Examiners</h4>
   <hr>
+  <div class="row">
+  <div class="col-9">
   <form class="form-inline">
-    <div class="form-group">
+    <div class="form-group col-3">
       <label for="sub_code">Subject Code</label>
-      &nbsp;&nbsp;
       <select class="form-control" name="scode" id="sub_code" (change)="myFunction(allot.subject_code)" [(ngModel)]="allot.subject_code">
         <option *ngFor="let scode of subjects" value={{scode.Code}} >{{scode.Code}}</option>
       </select>
-    </div>&nbsp;&nbsp;&nbsp;
-    <div class="form-group">
+    </div>
+    <div class="form-group col-3">
         <label for="ex1_name">Internal Examiner</label>
-        &nbsp;&nbsp;
         <select class="form-control" name="internal" id="ex1_name" [(ngModel)]="allot.internal_examiner">
           <option *ngFor="let examiner of internal_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
-    </div>&nbsp;&nbsp;&nbsp;
-    <div class="form-group">
+    </div>
+    <div class="form-group col-3">
         <label for="ex2_name">External Examiner</label>
-        &nbsp;&nbsp;
         <select class="form-control" name="external" id="ex2_name" [(ngModel)]="allot.external_examiner">
           <option *ngFor="let examiner of external_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
-    </div>&nbsp;&nbsp;&nbsp;
-    <div class="form-group">
-      <button class="btn btn-dark form-control" (click)="allotExaminers()">Allot</button>
     </div>
     <div class="form-group col-2">
-        <input type="button" class="btn btn-block btn-sm btn-outline-success form-control" (click)="doit('xlsx')" value="Export">
+      <button class="btn btn-dark form-control" (click)="allotExaminers()">Allot</button>
     </div>
-   
+  </form> 
+</div>
+  <div class="col-3">
     <div class="form-group">
         <div class="input-group">
+            
           <div class="input-group-addon">
             <i class="fas fa-search"></i>
           </div>
-          <input type="text" class="form-control" name="searchString" placeholder="Type Subject Code..." [(ngModel)]="searchString">
+          <input type="text" id="search" class="form-control" name="searchString" placeholder="Type Subject Code..." [(ngModel)]="searchString">
         </div>
-      </div>
+    </div>
+  </div>
+</div>
     
-  </form> 
+  
   <br>
    <div> <!-- *ngIf='alloted_examiners.length>0'> -->
     <table class="table table-striped table-bordered table-sm">
@@ -62,7 +63,7 @@
           <td>{{alloted.internal_examiner}}</td>
           <td>{{alloted.external_examiner}}</td>
           <td>
-            <div >
+            <div>
               <div class="row">
               <div class="col-8">
                   <select class="form-control" id="#ps" [(ngModel)]="ps_name"  *ngIf="!alloted.ps_name">  
@@ -86,5 +87,8 @@
       </tbody>
     </table>
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <div class="form-group export-wrapper">
+        <input type="button" class="btn btn-block btn-sm btn-outline-success form-control" (click)="doit('xlsx')" value="Export">
+    </div>
   </div>
 </div>

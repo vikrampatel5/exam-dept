@@ -19,13 +19,7 @@
         <datalist id="codes">
             <option value="{{value.Code}}" *ngFor="let value of subjects"></option>
         </datalist>
-        <!-- <div>
-          <li *ngFor="subject in (subjects | filter:search)" [value]="subject.Code">{{subject.Code}}</li>
-        </div> -->
-        <!-- <select class="form-control custom-select" name="sub" id="sub" [(ngModel)]="examiner.subject_code" formControlName="scode" [ngClass]="displayFieldCss('scode')">
-          <option selected disabled>Choose Type</option>
-          <option value="{{value.Code}}" *ngFor="let value of subjects">{{value.Code}}</option>
-        </select> -->
+      
         <p class="small" *ngIf="isValid('scode')">Subject Code is Mandatory</p>
 
         <label for="dept">Department: </label>
@@ -66,7 +60,7 @@
   <h4>List of Examiners</h4>
   <hr>
   <div class="row">
-    <div class="col-5">
+    <div class="col-4">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-addon">
@@ -82,7 +76,7 @@
         <a id="add" class="btn btn-dark text-white" (click)="openAddWindow()">Add Examiner</a>
       </label>
     </div>
-    <div class="col-3 input-group nopadding">
+    <div class="col-6 input-group">
       <div class="uploader">
         <input type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">
       </div>
@@ -91,9 +85,6 @@
         <button type="button" class="btn btn-sm btn-outline-success" (click)="Upload()">Upload</button>
       </div>
     </div>
-    <div class="col-2">
-        <input type="button" class="btn btn-block btn-sm btn-outline-success" (click)="doit('xlsx')" value="Export">
-      </div>
 
   </div>
   
@@ -135,5 +126,9 @@
       </tbody>
     </table>
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <div class="export-wrapper">
+      <input type="button" class="btn btn-block btn-sm btn-outline-success" (click)="doit('xlsx')" value="Export">
+    </div>
   </div>
 </div>
+

@@ -2,42 +2,43 @@
   <h4>Allot Examiners</h4>
   <hr>
   <div class="row">
+    <div class="col-3">
+        <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fas fa-search"></i>
+              </div>
+              <input type="text" id="search" class="form-control" name="searchString" placeholder="Type Subject Code..." [(ngModel)]="searchString">
+            </div>
+        </div>
+      </div>
   <div class="col-9">
-  <form class="form-inline">
+  <form class="form-inline"  (ngSubmit)="allotExaminers()" [formGroup]="myform" novalidate>
     <div class="form-group col-3">
-      <label for="sub_code">Subject Code</label>
-      <select class="form-control" name="scode" id="sub_code" (change)="myFunction(allot.subject_code)" [(ngModel)]="allot.subject_code">
+      <label for="sub_code">Subject Code</label>&nbsp;
+      <select class="form-control" name="scode" id="sub_code" (change)="myFunction(allot.subject_code)" [(ngModel)]="allot.subject_code"  formControlName="scode">
         <option *ngFor="let scode of subjects" value={{scode.Code}} >{{scode.Code}}</option>
       </select>
+      <p class="small" *ngIf="isValid('scode')">Subjecet Code is Mandatory</p>
     </div>
     <div class="form-group col-3">
-        <label for="ex1_name">Internal Examiner</label>
-        <select class="form-control" name="internal" id="ex1_name" [(ngModel)]="allot.internal_examiner">
+        <label for="ex1_name">Internal Examiner</label>&nbsp;
+        <select class="form-control" name="internal" id="ex1_name" [(ngModel)]="allot.internal_examiner"  formControlName="internal" >
           <option *ngFor="let examiner of internal_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
     </div>
     <div class="form-group col-3">
-        <label for="ex2_name">External Examiner</label>
-        <select class="form-control" name="external" id="ex2_name" [(ngModel)]="allot.external_examiner">
+        <label for="ex2_name">External Examiner</label>&nbsp;
+        <select class="form-control" name="external" id="ex2_name" [(ngModel)]="allot.external_examiner"  formControlName="external" >
           <option *ngFor="let examiner of external_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
     </div>
     <div class="form-group col-2">
-      <button class="btn btn-dark form-control" (click)="allotExaminers()">Allot</button>
+      <button type="submit" class="btn btn-dark form-control" [disabled]="myform.invalid">Allot</button>
     </div>
   </form> 
 </div>
-  <div class="col-3">
-    <div class="form-group">
-        <div class="input-group">
-            
-          <div class="input-group-addon">
-            <i class="fas fa-search"></i>
-          </div>
-          <input type="text" id="search" class="form-control" name="searchString" placeholder="Type Subject Code..." [(ngModel)]="searchString">
-        </div>
-    </div>
-  </div>
+
 </div>
     
   
@@ -59,14 +60,14 @@
         <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 5, currentPage: p}; let idx = index">
           <td> <input type="checkbox" name="cb" value="{{alloted.subject_code}}" [(ngModel)]="alloted['selected']" (click)="toggleSelection(alloted.subject_code)"></td>
           <th scope="row">{{idx+1}}</th>
-          <td>{{alloted.subject_code}}</td>
+          <td><span *ngFor="let sg of subjectGroups">{{sg}}</span></td>
           <td>{{alloted.internal_examiner}}</td>
           <td>{{alloted.external_examiner}}</td>
           <td>
             <div>
               <div class="row">
               <div class="col-8">
-                  <select class="form-control" id="#ps" [(ngModel)]="ps_name"  *ngIf="!alloted.ps_name">  
+                  <select class="form-control" id="#ps" [(ngModel)]="ps_name" *ngIf="!alloted.ps_name">  
                       <option>{{alloted.internal_examiner}}</option>
                       <option>{{alloted.external_examiner}}</option>
                 </select>

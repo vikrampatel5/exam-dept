@@ -7,6 +7,7 @@ import { AllotedService, AllotedItem } from '../services/alloted.service';
 import * as $ from 'jquery';
 import * as XLSX from 'xlsx';
 import { forEach } from '@angular/router/src/utils/collection';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-alloted',
@@ -15,6 +16,8 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class AllotedComponent implements OnInit {
 
+  subjectGroups: any;
+  myform: FormGroup;
   selectedAll: any;
   alloted_examiners: AllotedItem[];
   allot = {
@@ -35,14 +38,27 @@ export class AllotedComponent implements OnInit {
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
     private allotedService: AllotedService) {
+      this.subjectGroups = []
      }
 
   ngOnInit() {
     this.getCodes();
     this.getAlloted();
+    this.getSubjectGroups('BM29003');
+
+    this.myform = new FormGroup({
+
+      scode: new FormControl('', [
+          Validators.required
+      ]),
+      internal: new FormControl(''),
+      external: new FormControl(''),
+  });
   }
 
-  
+  isValid(field: string) {
+    return !this.myform.get(field).valid && this.myform.get(field).touched;
+  }
 
   getCodes() {
     this.subjectService.getSubjects().subscribe(res => {
@@ -52,6 +68,10 @@ export class AllotedComponent implements OnInit {
 
 
   allotExaminers() {
+    if(this.allot.internal_examiner==='' && this.allot.external_examiner===''){
+      alert('No Examiner to Allot. Please Select atleast one');
+      return;
+    }
     this.allotedService.addAlloted(this.allot).subscribe(res => this.getAlloted());
   }
 
@@ -123,6 +143,14 @@ myFunction(code){
   checkIfAllSelected() {
     this.selectedAll = this.alloted_examiners.every(function(item:any) {
         return item['selected'] == true;
+      })
+  }
+
+  getSubjectGroups(scode){
+      this.subjectService.getSubjectGroups(scode).subscribe(res => {
+        this.getSubjectGroups = res;
+        console.log(this.getSubjectGroups);
+        
       })
   }
 

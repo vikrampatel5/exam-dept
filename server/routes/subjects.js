@@ -66,6 +66,7 @@ subjects.post("/add_subject", (req, res, next) => {
     
   });
 
+
 subjects.get("/get_subjects", (req, res, next) => {
   con.getConnection(function(err, conn){
     if(err){
@@ -81,6 +82,23 @@ subjects.get("/get_subjects", (req, res, next) => {
   });
     
   });
+
+  subjects.get("/get_group/:code", (req, res, next) => {
+    con.getConnection(function(err, conn){
+      if(err){
+        return next(err);
+      }
+      else{
+        // console.log(req.params.code);
+        conn.query("SELECT Code from subjects where group_id IN (SELECT group_id FROM subjects where code=?)",req.params.code, function(err, result, fields) {
+          if (err) return next(err);
+          conn.release();
+          return res.send(result);
+        });
+      }
+    });
+      
+    });
   
   subjects.delete("/delete_subject/:code", (req, res, next) => {
     con.getConnection(function(err, conn){

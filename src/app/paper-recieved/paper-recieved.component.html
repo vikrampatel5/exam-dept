@@ -21,13 +21,6 @@
           <a id="add" class="btn btn-dark text-white" (click)="notify()">Notify</a>
         </label>
       </div>
-      <div class="col-1">
-        <input type="checkbox" id="click" style="display:none;" />
-        <label class="button-dark" for="click">
-          <a id="add" class="btn btn-dark text-white" (click)="doit('xlsx')">Export</a>
-        </label>
-      </div>
-    
     <div class="col-2">
       <input type="checkbox" id="click" style="display:none;" />
       <label class="button-dark" for="click">
@@ -90,5 +83,8 @@
     </tbody>
   </table>
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <div class="form-group export-wrapper">
+      <input type="button" class="btn btn-block btn-sm btn-outline-success form-control" (click)="doit('xlsx')" value="Export">
+  </div>
 </div>
 </div>

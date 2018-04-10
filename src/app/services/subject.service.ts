@@ -14,10 +14,16 @@ export class SubjectItem {
     public group_id: string
   ) {}
 }
+export class CodeItem {
+  constructor(
+    public Code: string,
+  ) {}
+}
 
 @Injectable()
 export class SubjectService {
   subjects: SubjectItem[];
+  subject_groups: CodeItem[];
   addResponse: any;
   deleteResponse: any;
 
@@ -68,11 +74,13 @@ export class SubjectService {
         );
   }
 
-  getSubjectGroups(scode){
+  getSubjectGroups(scode):  Observable<CodeItem[]>{
     return this.http.get('http://localhost:3000/subject/get_group/'+scode)
                     .map(
                       res => {
-                        return res.json();
+                        return res.json().map(item => {
+                          return new CodeItem(item.Code);
+                        });
                       }
                     )
   }

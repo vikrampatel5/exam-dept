@@ -53,6 +53,8 @@ subjects.post("/add_subject", (req, res, next) => {
     //var data = [];
 
     // console.log(data);
+
+
     conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ? ON DUPLICATE KEY UPDATE Code=Code", [data], function(
       err,
       result
@@ -80,7 +82,6 @@ subjects.get("/get_subjects", (req, res, next) => {
       });
     }
   });
-    
   });
 
   subjects.get("/get_group/:code", (req, res, next) => {
@@ -89,12 +90,27 @@ subjects.get("/get_subjects", (req, res, next) => {
         return next(err);
       }
       else{
-        // console.log(req.params.code);
-        conn.query("SELECT Code from subjects where group_id IN (SELECT group_id FROM subjects where code=?)",req.params.code, function(err, result, fields) {
-          if (err) return next(err);
-          conn.release();
-          return res.send(result);
+        console.log(req.params.code);
+        conn.query('Select group_id from subjects where code = ?',req.params.code,(err,results,fields)=>{
+          var gid = results[0].group_id;
+          console.log(gid);
+          if(gid > 0){
+            conn.query("SELECT Code from subjects where group_id = ?",gid, function(err, results, fields) {
+              if (err) return next(err);
+              conn.release();
+              return res.send(results);
+          });
+          }
+          else{
+            conn.query("SELECT Code from subjects where Code=?",req.params.code,(err, results, fields)=>{
+              if (err) return next(err);
+              conn.release();
+              console.log(results);
+              return res.send(results);
+            });
+          }
         });
+        
       }
     });
       

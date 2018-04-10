@@ -72,7 +72,7 @@
                     <option value="Not Received">Not Received</option>
                     <option value="Received">Received</option>
               </select>
-              <div *ngIf="alloted.status == 'Received'">{{alloted.status}}</div>
+              <div *ngIf="alloted.status === 'Received'">{{alloted.status}}</div>
             </div>
             <div class="col-4" *ngIf="alloted.status !== 'Received'">
                 <button (click)="updateStatus(alloted, alloted.ps_name)" class="btn btn-sm btn-outline-success">Update</button>

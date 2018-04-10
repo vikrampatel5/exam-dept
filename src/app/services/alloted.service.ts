@@ -6,6 +6,8 @@ export class AllotedItem {
   constructor(
     public subject_code: string,
     public internal_examiner: string,
+    public internal_id: number,
+    public external_id: number,
     public external_examiner: string,
     public ps_name: string,
     public proposal: string,
@@ -62,10 +64,12 @@ export class AllotedService {
               return new AllotedItem(
                 item.subject_code,
                 item.internal_examiner,
+                item.internal_id,
+                item.external_id,
                 item.external_examiner,
                 item.ps_name,
                 item.proposal,
-                item.status
+                item.status,
               );
           },
         );

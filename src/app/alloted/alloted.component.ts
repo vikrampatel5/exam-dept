@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { stringify } from 'querystring';
-import { SubjectService, SubjectItem } from '../services/subject.service';
+import { SubjectService, SubjectItem, CodeItem } from '../services/subject.service';
 import { AllotedService, AllotedItem } from '../services/alloted.service';
 import * as $ from 'jquery';
 import * as XLSX from 'xlsx';
@@ -16,7 +16,8 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 })
 export class AllotedComponent implements OnInit {
 
-  subjectGroups: any;
+  subjectGroups: CodeItem[];
+  groups = [];
   myform: FormGroup;
   selectedAll: any;
   alloted_examiners: AllotedItem[];
@@ -44,7 +45,7 @@ export class AllotedComponent implements OnInit {
   ngOnInit() {
     this.getCodes();
     this.getAlloted();
-    this.getSubjectGroups('BM29003');
+    //this.getSubjectGroups('BM29003');
 
     this.myform = new FormGroup({
 
@@ -63,6 +64,7 @@ export class AllotedComponent implements OnInit {
   getCodes() {
     this.subjectService.getSubjects().subscribe(res => {
       this.subjects = res;
+      // console.log(this.subjects);
     });
   }
 
@@ -73,6 +75,7 @@ export class AllotedComponent implements OnInit {
       return;
     }
     this.allotedService.addAlloted(this.allot).subscribe(res => this.getAlloted());
+    this.closex();
   }
 
   getAlloted() {
@@ -80,8 +83,10 @@ export class AllotedComponent implements OnInit {
       this.alloted_examiners = res;
       for (let i = 0; i < this.alloted_examiners.length; i++) { 
         this.alloted_examiners[i]['selected']=false;
+        this.getSubjectGroups(this.alloted_examiners[i].subject_code);
+
       } 
-      // console.log(this.alloted_examiners);
+      console.log(this.alloted_examiners);
     });
   }
 
@@ -148,11 +153,28 @@ myFunction(code){
 
   getSubjectGroups(scode){
       this.subjectService.getSubjectGroups(scode).subscribe(res => {
-        this.getSubjectGroups = res;
-        console.log(this.getSubjectGroups);
-        
+       // this.subjectGroups = res;
+       console.log(this.subjectGroups);
+        this.groups.push(res);
+        console.log(this.groups);
       })
   }
 
+
+
+
+
+  openAddWindow() {
+  
+    $('#entry').val('Add');
+    $('.modal_form').toggleClass('modal_form_on');
+    $('.overlay').toggleClass('overlay_on');
+  
+    }
+  
+    closex() {
+      $('.modal_form').toggleClass('modal_form_on');
+      $('.overlay').toggleClass('overlay_on');
+    }
   /**********************/ 
 }

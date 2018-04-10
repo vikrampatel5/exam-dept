@@ -32,8 +32,16 @@ alloted.post("/update_alloted", (req, res, next) => {
     }
     else{
       var sc = req.body.subject_code;
-      console.log(req.body);
-      conn.query("UPDATE alloted_examiners SET ? where subject_code = '"+sc+"'", req.body, function(
+      var data = {
+        subject_code: req.body.subject_code,
+        internal_examiner: req.body.internal_examiner,
+        external_examiner: req.body.external_examiner,
+        ps_name: req.body.ps_name,
+        proposal: req.body.proposal,
+        status: req.body.status
+      }
+      // console.log(req.body);
+      conn.query("UPDATE alloted_examiners SET ? where subject_code = '"+sc+"'", data, function(
         err,
         result,
         fields

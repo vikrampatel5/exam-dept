@@ -2,9 +2,11 @@
   <div class="container">
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-8">
+      <div class="col-md-8 loginForm">
         <div id="form-bg">
-          <img class="img-responsive" src="../../../assets/images/SGSITS-Indore-Logo.png" alt="S.G.S.I.T.S Logo">
+          <div class="img-wrapper">
+            <img class="img-responsive" src="../../../assets/images/SGSITS-Indore-Logo.png" alt="S.G.S.I.T.S Logo">
+          </div>
           <h3 class="heading" id="h3">Login</h3>
           <div class="underline"></div>
           <br>
@@ -16,11 +18,6 @@
                 <br>
                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password" [ngClass]="displayFieldCss('password')" [(ngModel)]="loginDetails.pass">
                 <p class="small" *ngIf="isValid('password')">Minimum 8 Characters Required</p>
-              </div>
-              <div class="form-check">
-                <small class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1"> Remember me
-                </small>
               </div>
               <br>
               <button type="submit" class="btn btn-secondary btn-lg btn-block btn-dark myButton" [disabled]="myform.invalid" (click)="login()">Login</button>

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { PaperRecievedComponent } from './paper-recieved/paper-recieved.componen
 import { UserService } from './services/users.service';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { UsersComponent } from './users/users.component';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 
 
 const appRoutes: Routes = [
@@ -71,7 +73,9 @@ const appRoutes: Routes = [
     UsersComponent
   ],
   imports: [
+    ToasterModule,
     FormsModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpModule,

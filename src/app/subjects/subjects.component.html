@@ -82,7 +82,11 @@
     </table>
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
     <div class="export-wrapper">
+        <input type="button" class="btn btn-block btn-sm btn-outline-danger" (click)="deleteAllSubjects()" value="Delete All">
+    </div>
+    <div class="export-wrapper">
       <input type="button" class="btn btn-block btn-sm btn-outline-success" (click)="doit('xlsx')" value="Export">
     </div>
+    
   </div>
 </div>

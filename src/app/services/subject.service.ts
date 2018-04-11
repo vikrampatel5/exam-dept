@@ -50,6 +50,15 @@ export class SubjectService {
       );
   }
 
+  deleteAllSubjects(){
+    return this.http.delete('http://localhost:3000/subject/delete_all')
+    .map(
+      res => {
+        return res.json();
+      }
+    )
+  }
+
   uploadFile(file) {
     // console.log(file);
     return this.http.post('http://localhost:3000/subject/upload_file', file)

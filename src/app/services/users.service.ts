@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { resolve } from 'url';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -9,6 +10,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 
 export class UserItem {
   constructor(
@@ -23,7 +25,7 @@ export class UserService {
 
   public users: UserItem[];
 
-  constructor(private http: HttpClient, private ht: Http, private router:Router) {
+  constructor(private http: HttpClient, private ht: Http, private router:Router, private toasterService: ToasterService) {
     this.users = [];
    }
 
@@ -42,9 +44,10 @@ export class UserService {
   return this.http.get('http://localhost:3000/users/getUser',  {params: params})
       .map( res => {
         if(!res[0]){
-          console.log('User Not Found');
+          this.toasterService.pop('error', 'Authntication Error', 'provide valid email and password');
         }
         else{
+          this.toasterService.pop('success', 'Login Succeful', 'Welcome '+res[0].name);
           this.router.navigate(["/dashboard"]);
         }
       });

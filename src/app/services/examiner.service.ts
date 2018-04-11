@@ -4,6 +4,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/toPromise';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
@@ -30,7 +32,7 @@ export class ExaminerService {
   addResponse: any;
   deleteResponse: any;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private toasterService: ToasterService ) {
     this.examiners = [];
   }
 
@@ -70,10 +72,18 @@ export class ExaminerService {
     return this.http.delete('http://localhost:3000/examiner/delete_examiner/' + id)
       .map(
         res => {
-          
           return res.json();
         }
       );
+  }
+
+  deleteAllExaminers(){
+    return this.http.delete('http://localhost:3000/examiner/delete_all')
+    .map(
+      res => {
+        return res.json();
+      }
+    )
   }
 
   getExaminers(): Observable<ExaminerItem[]> {

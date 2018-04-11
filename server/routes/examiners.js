@@ -46,18 +46,24 @@ examiners.post("/upload_file", (req, res, next) => {
     }
     else{
       var data = ObjToArray(req.body);
-  // console.log(data);
+
   conn.query("INSERT INTO examiners( name, Subject_code, Department, Address) VALUES ?", [data], function(
     err,
     result
   ) {
     if (err){
+      console.log(err);
       if(err.errno == 1452){
         return res.send({status: false, message:"Please Check Your File, All Subject Codes Should be Valid"})
       }
+      if(err.errno = 1136){
+        return res.send({status: false, message:"Column count doesn't match value count Or Null Value"});
+      }
     }
+   else{
     conn.release();
-    return res.send(req.body);
+    return res.send({status: true, message:"File Uploaded Successfully"});
+    }
   });
     }
   });
@@ -131,7 +137,29 @@ examiners.delete("/delete_examiner/:id", (req, res, next) => {
         (err, result) => {
           if(err) return next(err);
           conn.release();
-          return res.send(result);
+          return res.send({status:true,data:result,message:"Examiner Deleted Successfully"});
+        }
+      );
+    }
+  });
+ 
+});
+
+
+examiners.delete("/delete_all", (req, res, next) => {
+  con.getConnection(function(err,conn){
+    if(err){
+      conn.release();
+      return res.send({status:false,message:"Error While Deleting"});
+    }
+    else{
+      conn.query(
+        "truncate examiners",
+        req.params.id,
+        (err, result) => {
+          if(err) return next(err);
+          conn.release();
+          return res.send({status:true,data:result,message:"All Examiner Details Are Deleted Successfully"});
         }
       );
     }

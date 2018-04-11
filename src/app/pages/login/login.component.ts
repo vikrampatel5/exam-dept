@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Validators, FormGroup, FormControl} from '@angular/forms';
 import { UserService } from '../../services/users.service';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 
 
 @Component({
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
     uname: '',
     pass: ''
   }
-  constructor(private userService: UserService) { }
+
+  constructor(private userService: UserService, private toasterService: ToasterService) { }
 
   ngOnInit() {
 
@@ -50,7 +52,9 @@ export class LoginComponent implements OnInit {
   login()
   {
     console.log(this.loginDetails);
-    this.userService.getUser(this.loginDetails).subscribe();
+    this.userService.getUser(this.loginDetails).subscribe(res => {
+      
+    });
   }
 
 }

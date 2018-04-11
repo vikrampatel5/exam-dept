@@ -47,25 +47,27 @@ subjects.post("/add_subject", (req, res, next) => {
         return next(err);
       }
       else{
-    // console.log(req.body);
-    //var values = req.body;
-    var data = ObjToArray(req.body);
-    //var data = [];
+        var data = ObjToArray(req.body);
 
-    // console.log(data);
-
-
-    conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ? ON DUPLICATE KEY UPDATE Code=Code", [data], function(
-      err,
-      result
-    ) {
-      if (err) return next(err);
-      conn.release();
-      return res.send(req.body);
-    });
-      }
-    });
-    
+      conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ? ON DUPLICATE KEY UPDATE Code=Code", [data], function(
+        err,
+        result
+      ) {
+        if (err){
+          console.log(err);
+          if(err.errno = 1136){
+            return res.send({status: false, message:"Column count doesn't match value count Or Null Value"});
+          }
+        }
+       else{
+        conn.release();
+        return res.send({status: true, message:"File Uploaded Successfully"});
+        }
+      });
+        }
+      });
+      
+      
   });
 
 
@@ -136,6 +138,27 @@ subjects.get("/get_subjects", (req, res, next) => {
     })
    
   });
+
+  subjects.delete("/delete_all", (req, res, next) => {
+    con.getConnection(function(err,conn){
+      if(err){
+        return next(err);
+      }
+      else{
+        conn.query(
+          "truncate subjects",
+          req.params.id,
+          (err, result) => {
+            if(err) return next(err);
+            conn.release();
+            return res.send({status:true,data:result,message:"All Subject Details Are Deleted Successfully"});
+          }
+        );
+      }
+    });
+   
+  });
+  
 
 
 module.exports = subjects;

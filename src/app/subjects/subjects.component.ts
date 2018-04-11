@@ -3,6 +3,8 @@ import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { SubjectService, SubjectItem } from '../services/subject.service';
 import * as XLSX from 'xlsx';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 import * as FileSaver from 'file-saver';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
@@ -38,7 +40,9 @@ export class SubjectsComponent implements OnInit {
   }
   //
 
-  constructor(private subjectService: SubjectService) {}
+  constructor(private subjectService: SubjectService,
+    private toasterService: ToasterService
+  ) {}
 
   ngOnInit() {
       this.getSubjects();
@@ -88,17 +92,31 @@ export class SubjectsComponent implements OnInit {
           const first_sheet_name = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[first_sheet_name];
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true});
-          this.subjectService.uploadFile(myFile).subscribe();
+          this.subjectService.uploadFile(myFile).subscribe(res => {
+            if(res.status===false){
+              this.toasterService.pop('error','Error While Uploading: ',res.message);
+            }
+            else if(res.status===true){
+              this.getSubjects();
+              this.toasterService.pop('success',res.message);
+            }
+          });
       };
       fileReader.readAsArrayBuffer(this.file);
     }
 
    doit(type, fn, dl) {
-    const json = this.subjectService.subjects;
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-    XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
-    XLSX.writeFile(wb, fn || ('Subjects.' + (type || 'xlsx')));
+    if(this.subjects.length===0){
+      this.toasterService.pop('info',"No Details Found to Export");
+    }
+    else{
+      const json = this.subjectService.subjects;
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+      const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+      XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
+      XLSX.writeFile(wb, fn || ('Subjects.' + (type || 'xlsx')));
+      this.toasterService.pop('success',"Data Exported Successfully");
+    }
 }
 
 // Modal Window functions
@@ -142,6 +160,23 @@ openAddWindow() {
        return '';
      }
   }
+
+  deleteAllSubjects(){
+    console.log(this.subjects);
+    if(this.subjects.length===0){
+      this.toasterService.pop('info',"No Details Found to Delete");
+    }
+    else{
+        this.subjectService.deleteAllSubjects().subscribe(
+          res => {
+            if(res.status===true){
+              this.toasterService.pop('success',res.message);
+              this.getSubjects();
+            }
+          }
+        )
+      }
+    }
 
 
 }

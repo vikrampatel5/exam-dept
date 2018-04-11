@@ -15,10 +15,11 @@ alloted.post("/add_alloted", (req, res, next) => {
         result,
         fields
       ) {
-        if(err) return next(err);
+        if(err){
+          return res.send({status:false, data:req.body, message:"Error While Alloting"});
+        }
         conn.release();
-        return res.send(req.body);
-        
+        return res.send({status:true, data:result, message:"Examiner Alloted Successfully"});
       });
     }
   })
@@ -83,9 +84,14 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
         "delete from alloted_examiners where subject_code = ? ",
         req.params.id,
         (err, result) => {
-          if(err) return next(err);
-          conn.release();
-          return res.send(result);
+          if(err){
+            conn.release();
+            return res.send({status:false,message:"Error While Deleting"});
+          }
+          else{
+            conn.release();
+            return res.send({status:true, data:result, message:"Detail Deleted Successfully"});
+          }
          
         }
       );
@@ -93,5 +99,34 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
   });
  
 });
+
+
+alloted.delete("/delete_all", (req, res, next) => {
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query(
+        "truncate alloted_examiners",
+        req.params.id,
+        (err, result) => {
+          if(err){
+            conn.release();
+            return res.send({status:false,message:"Error While Deleting"});
+          }
+          else{
+            conn.release();
+            return res.send({status:true, data:result, message:"All Alloted Details Deleted Successfully"});
+          }
+         
+        }
+      );
+    }
+  });
+ 
+});
+
+
 
 module.exports = alloted;

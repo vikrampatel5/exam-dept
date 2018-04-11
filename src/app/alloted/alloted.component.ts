@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { stringify } from 'querystring';
 import { SubjectService, SubjectItem, CodeItem } from '../services/subject.service';
 import { AllotedService, AllotedItem } from '../services/alloted.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 import * as $ from 'jquery';
 import * as XLSX from 'xlsx';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -38,7 +40,9 @@ export class AllotedComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
-    private allotedService: AllotedService) {
+    private allotedService: AllotedService,
+    private toasterService: ToasterService
+  ) {
       this.subjectGroups = []
      }
 
@@ -71,10 +75,18 @@ export class AllotedComponent implements OnInit {
 
   allotExaminers() {
     if(this.allot.internal_examiner==='' && this.allot.external_examiner===''){
-      alert('No Examiner to Allot. Please Select atleast one');
+      this.toasterService.pop('info','No Examiner to Allot. Please Select atleast one')
       return;
     }
-    this.allotedService.addAlloted(this.allot).subscribe(res => this.getAlloted());
+    else{
+      this.allotedService.addAlloted(this.allot).subscribe(res => {
+        if(res.status===true){
+          this.toasterService.pop('success',res.message);
+        }
+        this.getAlloted()
+      });
+
+    }
     this.closex();
   }
 
@@ -91,20 +103,60 @@ export class AllotedComponent implements OnInit {
   }
 
   deleteAlloted(scode) {
-    this.allotedService.deleteAlloted(scode).subscribe(res => this.getAlloted());
+    this.allotedService.deleteAlloted(scode).subscribe(res => {
+      if(res.status === false){
+        this.toasterService.pop('error',res.message);
+      }
+      else{
+        this.getAlloted();
+        this.toasterService.pop('success',res.message);
+      }
+    });
   }
 
+  deleteAllAlloted(){
+    console.log(this.alloted_examiners);
+    if(this.alloted_examiners.length===0){
+      this.toasterService.pop('info',"No Details Found to Delete");
+    }
+    else{
+        this.allotedService.deleteAllAlloted().subscribe(
+          res => {
+            if(res.status===true){
+              this.toasterService.pop('success',res.message);
+              this.getAlloted();
+            }
+          }
+        )
+      }
+    }
+
+
   updateAlloted(alloted) {
-    this.allotedService.updateAlloted(alloted, this.ps_name).subscribe(res =>  this.getAlloted());
+    if(this.ps_name===''){
+      this.toasterService.pop("info","Please Select Papper Setter Name");
+      return;
+    }
+    else{
+      this.allotedService.updateAlloted(alloted, this.ps_name).subscribe(res =>  this.getAlloted());
+    }
+   
 
   }
 
   doit(type, fn, dl) {
-    const json = this.allotedService.alloted;
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-    XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
-    XLSX.writeFile(wb, fn || ('Alloted_Examiners.' + (type || 'xlsx')));
+    if(this.alloted_examiners.length===0){
+      this.toasterService.pop("info","No Data Found To Export");
+    }
+    else{
+      const json = this.allotedService.alloted;
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+      const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+      XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
+      XLSX.writeFile(wb, fn || ('Alloted_Examiners.' + (type || 'xlsx')));
+      this.toasterService.pop("success","Data Exported Successfully");
+    }
+    
 }
 
 
@@ -159,10 +211,6 @@ myFunction(code){
         console.log(this.groups);
       })
   }
-
-
-
-
 
   openAddWindow() {
   

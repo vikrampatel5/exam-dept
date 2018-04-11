@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import {Validators, FormGroup, FormControl} from '@angular/forms';
 import { HttpModule, Headers } from '@angular/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ExaminerService, ExaminerItem } from '../services/examiner.service';
@@ -44,7 +46,9 @@ private examiners: ExaminerItem[];
   constructor(private http: HttpClient,
     private router: RouterModule,
     private examinerService: ExaminerService,
-    private subjectService: SubjectService) {
+    private subjectService: SubjectService,
+    private toasterService: ToasterService
+  ) {
   }
 
   ngOnInit() {
@@ -140,7 +144,9 @@ private examiners: ExaminerItem[];
 
   deleteExaminer(code) {
     this.examinerService.deleteExaminer(code).subscribe(res => {
-      console.log(res);
+      if(res.status === true){
+        this.toasterService.pop('success', res.message);
+      }
       this.getExaminers();
     });
   }
@@ -157,11 +163,11 @@ private examiners: ExaminerItem[];
   addExaminer() {
     this.examinerService.addExaminer(this.examiner).subscribe(res => {
       if(res.status==false){
-        alert('Error Inserting: '+res.message);
+        this.toasterService.pop('error','Error: ',res.message);
       }
       else{
         this.getExaminers();
-        alert('Message: '+res.message);
+        this.toasterService.pop('success','Examiner Details Added Successfully');
       }
       
     });
@@ -172,6 +178,7 @@ private examiners: ExaminerItem[];
     this.examinerService.updateExaminer(this.examiner).subscribe(res => {
       
       this.getExaminers();
+      this.toasterService.pop('info','Examiner Details Updated Successfully');
     });
     this.closex();
 
@@ -192,8 +199,12 @@ private examiners: ExaminerItem[];
           // console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true });
           this.examinerService.uploadFile(myFile).subscribe(res=>{
-            if(res.status==false){
-              alert("Error While Uploading: "+res.message);
+            if(res.status===false){
+              this.toasterService.pop('error','Error While Uploading: ',res.message);
+            }
+            else if(res.status===true){
+              this.getExaminers();
+              this.toasterService.pop('success',res.message);
             }
           });
       };
@@ -201,11 +212,35 @@ private examiners: ExaminerItem[];
     }
 
     doit(type, fn, dl) {
-      const json = this.examiners;
-      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-      const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['ExaminerSheet'] };
-      XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
-      XLSX.writeFile(wb, fn || ('Examiners.' + (type || 'xlsx')));
+      if(this.examiners.length===0){
+        this.toasterService.pop('info',"No Details Found to Export");
+      }
+      else{
+        const json = this.examiners;
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+        const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['ExaminerSheet'] };
+        XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
+        XLSX.writeFile(wb, fn || ('Examiners.' + (type || 'xlsx')));
+        this.toasterService.pop('success',"Data Exported Successfully");
+      }
+      
   }
+
+  deleteAllExaminers(){
+    console.log(this.examiners);
+    if(this.examiners.length===0){
+      this.toasterService.pop('info',"No Details Found to Delete");
+    }
+    else{
+        this.examinerService.deleteAllExaminers().subscribe(
+          res => {
+            if(res.status===true){
+              this.toasterService.pop('success',res.message);
+              this.getExaminers();
+            }
+          }
+        )
+      }
+    }
 
 }

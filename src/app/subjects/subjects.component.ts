@@ -20,8 +20,6 @@ const EXCEL_EXTENSION = '.xlsx';
 
 
 export class SubjectsComponent implements OnInit {
-
-  
   myform: FormGroup;
   subjects: SubjectItem[];
 
@@ -59,14 +57,13 @@ export class SubjectsComponent implements OnInit {
 
   addSCode() {
     this.subjectService.addSCode(this.subject).subscribe(res => {
-      if(res.status==false){
-        alert('Error Inserting: '+res.message);
+      if ( res.status === false) {
+        alert('Error Inserting: ' + res.message);
+      }else {
+        this.getSubjects();
+        alert('Message: ' + res.message);
       }
-      else{
-        this.getSubjects()
-        alert('Message: '+res.message);
-      }
-      
+
     });
     this.closex();
   }
@@ -93,12 +90,11 @@ export class SubjectsComponent implements OnInit {
           const worksheet = workbook.Sheets[first_sheet_name];
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true});
           this.subjectService.uploadFile(myFile).subscribe(res => {
-            if(res.status===false){
-              this.toasterService.pop('error','Error While Uploading: ',res.message);
-            }
-            else if(res.status===true){
+            if ( res.status === false ) {
+              this.toasterService.pop('error', 'Error While Uploading: ', res.message);
+            } else if ( res.status === true) {
               this.getSubjects();
-              this.toasterService.pop('success',res.message);
+              this.toasterService.pop('success', res.message);
             }
           });
       };
@@ -106,16 +102,15 @@ export class SubjectsComponent implements OnInit {
     }
 
    doit(type, fn, dl) {
-    if(this.subjects.length===0){
-      this.toasterService.pop('info',"No Details Found to Export");
-    }
-    else{
+    if (this.subjects.length === 0) {
+      this.toasterService.pop('info', 'No Details Found to Export');
+    }else {
       const json = this.subjectService.subjects;
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
       const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
       XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
       XLSX.writeFile(wb, fn || ('Subjects.' + (type || 'xlsx')));
-      this.toasterService.pop('success',"Data Exported Successfully");
+      this.toasterService.pop('success', 'Data Exported Successfully');
     }
 }
 
@@ -138,7 +133,7 @@ openAddWindow() {
 
 
   openEditWindow(subject) {
-    this.subject.Code= subject.code,
+    this.subject.Code = subject.code,
     this.subject.Nomenclature = subject.Nomenclature;
     this.subject.group_id = subject.group_id,
     $('#entry').val('Update');
@@ -161,20 +156,21 @@ openAddWindow() {
      }
   }
 
-  deleteAllSubjects(){
+  deleteAllSubjects() {
     console.log(this.subjects);
-    if(this.subjects.length===0){
-      this.toasterService.pop('info',"No Details Found to Delete");
-    }
-    else{
-        this.subjectService.deleteAllSubjects().subscribe(
+    if ( this.subjects.length === 0) {
+      this.toasterService.pop('info', 'No Details Found to Delete');
+    }else {
+      this.subjectService.deleteAllSubjects().subscribe(
           res => {
-            if(res.status===true){
-              this.toasterService.pop('success',res.message);
+            if (res.status === false) {
+              this.toasterService.pop('error', res.message);
+            }
+            if ( res.status === true) {
+              this.toasterService.pop('success', res.message);
               this.getSubjects();
             }
-          }
-        )
+          });
       }
     }
 

@@ -16,17 +16,15 @@ subjects.post("/add_subject", (req, res, next) => {
           fields
         ) {
           if (err) {
-            if(err.errno == 1062){
-              return res.send({status:false,message:"Duplicate Entry Error"});
+              return res.send({status:false,message:"Server Error"});
             }
-            return next(err)
-          };
-          conn.release();
-          return res.send({status:true,message:"Subject Code Added Succefully"});
+          else {
+            conn.release();
+            return res.send({status:true,message:"Subject Code Added Succefully"});
+          }
         });
       }
     });
-    
   });
 
   function ObjToArray(obj) {
@@ -94,6 +92,8 @@ subjects.get("/get_subjects", (req, res, next) => {
       else{
         console.log(req.params.code);
         conn.query('Select group_id from subjects where code = ?',req.params.code,(err,results,fields)=>{
+          if(err) return next(err);
+          console.log(results);
           var gid = results[0].group_id;
           console.log(gid);
           if(gid > 0){
@@ -146,12 +146,18 @@ subjects.get("/get_subjects", (req, res, next) => {
       }
       else{
         conn.query(
-          "truncate subjects",
+          "delete from subjects",
           req.params.id,
           (err, result) => {
-            if(err) return next(err);
+            if(err){
+              if(err.errno == 1701){
+                conn.release();
+                return res.send({status: false, message:"Subject Codes are referenced by Examiner's subject code, Please delete examiner table first"});
+              }
+            }else{
             conn.release();
             return res.send({status:true,data:result,message:"All Subject Details Are Deleted Successfully"});
+            }
           }
         );
       }

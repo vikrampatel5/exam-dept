@@ -61,7 +61,7 @@
               <div *ngIf="alloted.proposal == 'Generated'">{{alloted.proposal}}</div>
             </div>
             <div class="col-4" *ngIf="alloted.proposal !== 'Generated'">
-                <button (click)="updateStatus(alloted)" class="btn btn-sm btn-outline-success">Update</button>
+                <button (click)="updateStatus(alloted, alloted.ps_name)" class="btn btn-sm btn-outline-success">Update</button>
             </div>
           </div>
         </div></td>

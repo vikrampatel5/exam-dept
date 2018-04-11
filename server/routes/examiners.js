@@ -54,7 +54,7 @@ examiners.post("/upload_file", (req, res, next) => {
     if (err){
       console.log(err);
       if(err.errno == 1452){
-        return res.send({status: false, message:"Please Check Your File, All Subject Codes Should be Valid"})
+        return res.send({status: false, message:"Please Check Your File, All Subject Codes Should be Valid"});
       }
       if(err.errno = 1136){
         return res.send({status: false, message:"Column count doesn't match value count Or Null Value"});
@@ -69,8 +69,6 @@ examiners.post("/upload_file", (req, res, next) => {
   });
   
 });
-
-
 
 examiners.post("/update_examiner", (req, res, next) => {
   con.getConnection(function(err,conn){
@@ -154,7 +152,7 @@ examiners.delete("/delete_all", (req, res, next) => {
     }
     else{
       conn.query(
-        "truncate examiners",
+        "delete from examiners",
         req.params.id,
         (err, result) => {
           if(err) return next(err);

@@ -13,7 +13,7 @@ declare const $;
 export class PaperRecievedComponent implements OnInit {
 
   // alloted_examiners: AllotedItem[];
-  codes =  ['BM2951','BM4953'];
+  codes =  ['BM2951', 'BM4953'];
   alloted_examiners: AllotedItem[];
 
   message= '';
@@ -24,33 +24,34 @@ export class PaperRecievedComponent implements OnInit {
   };
   status: '';
   proposal: '';
- 
+
   constructor(private allotedService: AllotedService, private http: HttpClient) { }
 
   ngOnInit() {
     this.getStatus();
   }
 
-  updateStatus(alloted, ps_name){
-    if(alloted.status !== ''){
+  updateStatus(alloted, ps_name) {
+    console.log(ps_name);
+    if (alloted.status !== '') {
       alloted.status = this.status;
     }
-    if(alloted.proposal !== ''){
+    if (alloted.proposal !== '') {
       alloted.proposal = this.proposal;
     }
-    
+
     this.allotedService.updateAlloted(alloted, ps_name).subscribe(res => this.getStatus());
   }
 
-  getStatus(){
+  getStatus() {
     this.allotedService.getAlloted().subscribe(res => this.alloted_examiners = res);
   }
 
-  appointmentLetter(){
+  appointmentLetter() {
     this.http.get('http://localhost:3000/appointment/generate').subscribe();
   }
 
-  notify(){
+  notify() {
     this.sendMail();
     // Write code for sending sms
   }

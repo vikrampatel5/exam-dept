@@ -39,11 +39,11 @@ export class UserService {
 
   loginCheck() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(currentUser);
     if (currentUser) {
-      this.toasterService.pop('info', 'User Already Logged In, Please LogOut First');
+      // this.toasterService.pop('info', 'User Already Logged In, Please LogOut First');
       this.router.navigate(['/dashboard']);
     }else {
-      this.toasterService.pop('info', 'User Not Logged In, Please Login First');
       this.router.navigate(['/login']);
     }
   }

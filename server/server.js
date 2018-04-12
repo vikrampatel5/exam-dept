@@ -35,6 +35,7 @@ app.use('/notify', notificationRoutes)
 app.use(function (err, req, res, next) {
   console.log(err);
   res.status(err.status || 500).send({
+      status: false,
       message: err.message,
       error: err
   });

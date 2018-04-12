@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
+    this.userService.loginCheck();
     $(document).ready(function () {
 
       $('#sidebarCollapse').on('click', function () {

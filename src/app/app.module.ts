@@ -35,11 +35,15 @@ const appRoutes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      {path: '', component: DashboardHomeComponent, outlet:'sub'},
-      {path: 'home', component: DashboardHomeComponent, outlet:'sub'},
+      {path: '', component: DashboardHomeComponent, outlet: 'sub'},
+      {path: 'home', component: DashboardHomeComponent, outlet: 'sub'},
       {path: 'alloted', component: AllotedComponent, outlet: 'sub'},
       {path: 'users', component: UsersComponent, outlet: 'sub'},
       {path: 'examiners', component: ExaminersComponent, outlet: 'sub'},

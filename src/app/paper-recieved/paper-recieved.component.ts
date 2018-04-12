@@ -22,6 +22,7 @@ export class PaperRecievedComponent implements OnInit {
     subject: 'Just For Fun',
     text: 'This is Custom Messsage'
   };
+  options = ['Not Generated', 'Generated'];
   status: '';
   proposal: '';
 

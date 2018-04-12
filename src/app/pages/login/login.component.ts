@@ -14,23 +14,17 @@ export class LoginComponent implements OnInit {
   loginDetails = {
     uname: '',
     pass: ''
-  }
+  };
 
   constructor(private userService: UserService, private toasterService: ToasterService) { }
 
   ngOnInit() {
 
-      this.myform = new FormGroup({
+      this.userService.loginCheck();
 
-      email: new FormControl('', [ 
-          Validators.required,
-          Validators.email
-      ]),
-      password: new FormControl('', [
-          Validators.minLength(8), 
-          Validators.required
-      ]),
-      language: new FormControl()
+      this.myform = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.minLength(8), Validators.required])
   });
   }
 
@@ -39,22 +33,17 @@ export class LoginComponent implements OnInit {
   }
 
   displayFieldCss(field: string) {
-    if(this.isValid(field)){
+    if (this.isValid(field)) {
       return 'has-error';
-    }
-    else if(!this.isValid(field)){
+    }else if (!this.isValid(field)) {
       return 'has-success';
+    }else {
+      return '';
     }
-    else return ''
   }
-  
 
-  login()
-  {
-    console.log(this.loginDetails);
+  login() {
     this.userService.getUser(this.loginDetails).subscribe(res => {
-      
     });
   }
-
 }

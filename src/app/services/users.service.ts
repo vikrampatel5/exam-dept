@@ -25,35 +25,52 @@ export class UserService {
 
   public users: UserItem[];
 
-  constructor(private http: HttpClient, private ht: Http, private router:Router, private toasterService: ToasterService) {
+  constructor(private http: HttpClient, private ht: Http, private router: Router, private toasterService: ToasterService) {
     this.users = [];
    }
 
-  addUser(clerk){
+  addUser(clerk) {
     return this.http.post('http://localhost:3000/users/addUser', clerk)
-      .map( res => 
-        {
+      .map( res => {
         alert('User Added');
       });
 
   }
-  getUser(user){
-  console.log(user);
-  let params = new HttpParams().set("email",user.uname).set("password", user.pass); //Create new HttpParams
+
+  loginCheck() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      this.toasterService.pop('info', 'User Already Logged In, Please LogOut First');
+      this.router.navigate(['/dashboard']);
+    }else {
+      this.toasterService.pop('info', 'User Not Logged In, Please Login First');
+      this.router.navigate(['/login']);
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('currentUser');
+    this.toasterService.pop('info', 'User Logged Out Successfully');
+    this.router.navigate(['/login']);
+  }
+
+  getUser(user) {
+  // console.log(user);
+  const params = new HttpParams().set('email', user.uname).set('password', user.pass); // Create new HttpParams
   // console.log(params);
   return this.http.get('http://localhost:3000/users/getUser',  {params: params})
       .map( res => {
-        if(!res[0]){
+        if ( !res[0] ) {
           this.toasterService.pop('error', 'Authntication Error', 'provide valid email and password');
-        }
-        else{
-          this.toasterService.pop('success', 'Login Succeful', 'Welcome '+res[0].name);
-          this.router.navigate(["/dashboard"]);
+        }else {
+          this.toasterService.pop('success', 'Login Succeful', 'Welcome ' + res[0].name);
+          localStorage.setItem('currentUser', JSON.stringify(res));
+          this.router.navigate(['/dashboard']);
         }
       });
   }
 
-  getAllUsers(): Observable<UserItem[]>{
+  getAllUsers(): Observable<UserItem[]> {
     return this.ht.get('http://localhost:3000/users/getAllUsers')
     .map(res => {
       return res.json().map(item => {
@@ -65,14 +82,14 @@ export class UserService {
            item.role
          );
        });
-    })
+    });
   }
 
-  deleteUser(id){
+  deleteUser(id) {
     return this.http.delete('http://localhost:3000/users/deleteUser/' + id)
       .map(
         res => {
-          return {message: 'Deletion of User was Successful'}
+          return {message: 'Deletion of User was Successful'};
         }
       );
   }

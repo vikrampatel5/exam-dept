@@ -37,7 +37,7 @@ users.get("/getUser", (req, res, next) => {
                 email: req.query.email,
                 password: req.query.password
             }
-            console.log(data);
+            // console.log(data);
             conn.query('Select * from users where email="'+data.email+'" and password="'+ data.password+'"', function(error, results, fields){
                 if (error) return next(error);
                 conn.release();

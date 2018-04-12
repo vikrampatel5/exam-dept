@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
+import { UserService } from '../services/users.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,10 +9,11 @@ import * as $ from 'jquery';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     $(document).ready(function () {
+
       $('#sidebarCollapse').on('click', function () {
           $('#sidebar').toggleClass('active');
       });
@@ -22,4 +24,9 @@ export class DashboardComponent implements OnInit {
       });
   });
   }
+
+  logOut() {
+    this.userService.logout();
+  }
+
 }

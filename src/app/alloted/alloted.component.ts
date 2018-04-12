@@ -19,6 +19,12 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 export class AllotedComponent implements OnInit {
 
   subjectGroups: CodeItem[];
+  message= '';
+  data = {
+    to : 'vikrampatel5@gmail.com',
+    subject: 'Just For Fun',
+    text: 'This is Custom Messsage'
+  };
   groups = [];
   myform: FormGroup;
   selectedAll: any;
@@ -33,10 +39,13 @@ export class AllotedComponent implements OnInit {
   ps_name: '';
 
   selection = [];
-
+  arr = [];
   subjects: SubjectItem[];
   internal_examiners: any;
   external_examiners: any;
+
+
+  public selectedExaminerToNotify = [];
 
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
@@ -96,7 +105,6 @@ export class AllotedComponent implements OnInit {
       for (let i = 0; i < this.alloted_examiners.length; i++) { 
         this.alloted_examiners[i]['selected']=false;
         this.getSubjectGroups(this.alloted_examiners[i].subject_code);
-
       } 
       console.log(this.alloted_examiners);
     });
@@ -225,4 +233,41 @@ myFunction(code){
       $('.overlay').toggleClass('overlay_on');
     }
   /**********************/ 
+
+
+  /*************Notification and Email***************************/ 
+
+  appointmentLetter() {
+    this.http.get('http://localhost:3000/appointment/generate').subscribe();
+  }
+
+  notify() {
+    let emails = [];
+    for(let code of this.selection){
+      this.allotedService.getSelectedEmail(code).subscribe(res => {
+        this.selectedExaminerToNotify.push(res);
+      });
+    }
+    for(let examiner of this.selectedExaminerToNotify){
+        emails.push(examiner.email);
+    }
+    console.log(this.selectedExaminerToNotify);
+    console.log(emails);
+    this.sendMail();
+    // Write code for sending sms
+  }
+
+  sendMail() {
+
+    this.message = 'Sending E-mail please wait...';
+    this.http.post('http://localhost:3000/notify/send_mail', this.data).subscribe(res => {
+       if (res) {
+         this.message = 'Message Sent Successfully';
+       }
+    });
+  }
+
+
+
+  /*****************************************************************/ 
 }

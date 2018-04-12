@@ -55,13 +55,11 @@ export class UserService {
   }
 
   getUser(user) {
-  // console.log(user);
   const params = new HttpParams().set('email', user.uname).set('password', user.pass); // Create new HttpParams
-  // console.log(params);
   return this.http.get('http://localhost:3000/users/getUser',  {params: params})
       .map( res => {
         if ( !res[0] ) {
-          this.toasterService.pop('error', 'Authntication Error', 'provide valid email and password');
+          this.toasterService.pop('error', 'Authentication Error', 'Provide Valid Email and Password');
         }else {
           this.toasterService.pop('success', 'Login Succeful', 'Welcome ' + res[0].name);
           localStorage.setItem('currentUser', JSON.stringify(res));
@@ -74,7 +72,6 @@ export class UserService {
     return this.ht.get('http://localhost:3000/users/getAllUsers')
     .map(res => {
       return res.json().map(item => {
-        // console.log(item);
          return new UserItem(
            item.id,
            item.name,

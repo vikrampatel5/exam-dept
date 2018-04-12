@@ -15,6 +15,13 @@ export class AllotedItem {
   ) {}
 }
 
+export class EmailItem{
+  constructor(
+    public email,
+    public name
+  ){}
+}
+
 @Injectable()
 export class AllotedService {
 
@@ -83,6 +90,21 @@ export class AllotedService {
           },
         );
       });
+  }
+
+  getSelectedEmail(code): Observable<EmailItem>{
+    return this.http
+      .get('http://localhost:3000/alloted/get_selected_email/'+code)
+      .map(
+        res => {
+          return res.json().map(item => {
+            return new EmailItem(
+              item.email,
+              item.name
+            )
+          })
+        }
+      )
   }
 
 }

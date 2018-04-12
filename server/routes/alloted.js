@@ -92,7 +92,26 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
             conn.release();
             return res.send({status:true, data:result, message:"Detail Deleted Successfully"});
           }
-         
+        }
+      );
+    }
+  });
+ 
+});
+
+alloted.get("/get_selected_email/:code", (req, res, next) => {
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query(
+        "select email, name from examiners where Subject_Code = ? ",
+        req.params.code,
+        (err, result) => {
+          if(err) return next(err);
+        conn.release();
+        return res.send(result);
         }
       );
     }
@@ -119,7 +138,6 @@ alloted.delete("/delete_all", (req, res, next) => {
             conn.release();
             return res.send({status:true, data:result, message:"All Alloted Details Deleted Successfully"});
           }
-         
         }
       );
     }

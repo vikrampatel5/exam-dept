@@ -16,12 +16,6 @@ export class PaperRecievedComponent implements OnInit {
   codes =  ['BM2951', 'BM4953'];
   alloted_examiners: AllotedItem[];
 
-  message= '';
-  data = {
-    to : 'vikrampatel5@gmail.com',
-    subject: 'Just For Fun',
-    text: 'This is Custom Messsage'
-  };
   options = ['Not Generated', 'Generated'];
   status: '';
   proposal: '';
@@ -48,24 +42,7 @@ export class PaperRecievedComponent implements OnInit {
     this.allotedService.getAlloted().subscribe(res => this.alloted_examiners = res);
   }
 
-  appointmentLetter() {
-    this.http.get('http://localhost:3000/appointment/generate').subscribe();
-  }
-
-  notify() {
-    this.sendMail();
-    // Write code for sending sms
-  }
-
-  sendMail() {
-
-    this.message = 'Sending E-mail please wait...';
-    this.http.post('http://localhost:3000/notify/send_mail', this.data).subscribe(res => {
-       if (res) {
-         this.message = 'Message Sent Successfully';
-       }
-    });
-  }
+ 
 
   doit(type, fn, dl) {
     const json = this.alloted_examiners;

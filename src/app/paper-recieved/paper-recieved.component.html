@@ -1,4 +1,24 @@
 <div class="col-12">
+
+    <div class="modal_form">
+        <div class="modal__content">
+          <label for="click" style="float:right">
+            <a class="close-x quit" (click)="closex()">X</a>
+          </label>
+      <h4>Send Notification to Selected Examiners</h4>
+      <form (ngSubmit)="notify()" [formGroup]="myform" novalidate>
+        <label for="subject">Subject</label>
+        <input class="form-control" id="subject" type="text" formControlName="subject" [(ngModel)]="data.subject">
+        <label for="text">Message</label>
+        <textarea class="form-control" id="text" formControlName="text" [(ngModel)]="data.text"></textarea>
+        <span class="small" *ngIf="!isValid('text')">Message is Required</span>
+        <br><br>
+        <input type="submit" class="btn btn-lg btn-block btn-dark" [disabled]="myform.invalid" value="Notify">
+      </form>
+      </div>
+      </div>
+      <div class="overlay"></div>
+
   <h4>Paper Recieved Status</h4>
   <hr>
   <!-- <div *ngIf='allotedService.alloted.length>0'> -->
@@ -18,7 +38,7 @@
       <div class="col-1">
         <input type="checkbox" id="click" style="display:none;" />
         <label class="button-dark" for="click">
-          <a id="add" class="btn btn-dark text-white" (click)="notify()">Notify</a>
+          <a id="add" class="btn btn-dark text-white" (click)="openAddWindow()">Notify</a>
         </label>
       </div>
   </div>
@@ -50,28 +70,28 @@
         <td><div id="#pp">
             <div class="row">
             <div class="col-4"> 
-                <select class="form-control input-sm" [(ngModel)]="proposal" *ngIf="alloted.proposal !== 'Generated'">
+                <select class="form-control input-sm" [(ngModel)]="proposal[idx]" *ngIf="alloted.proposal !== 'Generated'">
                     <option value="Not Generated">Not Generated</option>
                     <option value="Generated">Generated</option>
               </select>
               <div *ngIf="alloted.proposal == 'Generated'">{{alloted.proposal}}</div>
             </div>
             <div class="col-4" *ngIf="alloted.proposal !== 'Generated'">
-                <button (click)="updateStatus(alloted, alloted.ps_name)" class="btn btn-sm btn-outline-success">Update</button>
+                <button (click)="updateStatus(alloted, alloted.ps_name, idx)" class="btn btn-sm btn-outline-success">Update</button>
             </div>
           </div>
         </div></td>
         <td><div id="#ps">
             <div class="row">
             <div class="col-4"> 
-                <select class="form-control input-sm" [(ngModel)]="status" *ngIf="alloted.status !== 'Received'">
+                <select class="form-control input-sm" [(ngModel)]="status[idx]" *ngIf="alloted.status !== 'Received'">
                     <option value="Not Received">Not Received</option>
                     <option value="Received">Received</option>
               </select>
               <div *ngIf="alloted.status === 'Received'">{{alloted.status}}</div>
             </div>
             <div class="col-4" *ngIf="alloted.status !== 'Received'">
-                <button (click)="updateStatus(alloted, alloted.ps_name)" class="btn btn-sm btn-outline-success">Update</button>
+                <button (click)="updateStatus(alloted, alloted.ps_name, idx)" class="btn btn-sm btn-outline-success">Update</button>
             </div>
           </div>
         </div></td>

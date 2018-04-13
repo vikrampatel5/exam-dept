@@ -29,7 +29,7 @@ export class AllotedComponent implements OnInit {
   groups = [];
   myform: FormGroup;
   selectedAll: any;
-  alloted_examiners: AllotedItem[];
+  alloted_examiners: AllotedItem[] = [];
   allot = {
     subject_code: '',
     internal_examiner: '',
@@ -37,7 +37,7 @@ export class AllotedComponent implements OnInit {
     ps_name: ''
   };
 
-  ps_name: '';
+  ps_name = [];
   subjects: SubjectItem[];
   internal_examiners: any;
   external_examiners: any;
@@ -89,6 +89,12 @@ export class AllotedComponent implements OnInit {
       this.allotedService.addAlloted(this.allot).subscribe(res => {
         if (res.status === true) {
           this.toasterService.pop('success', res.message);
+          this.allot = {
+            subject_code: '',
+            internal_examiner: '',
+            external_examiner: '',
+            ps_name: ''
+          };
         }
         this.getAlloted();
       });
@@ -104,7 +110,7 @@ export class AllotedComponent implements OnInit {
         this.alloted_examiners[i]['selected'] = false;
         this.getSubjectGroups(this.alloted_examiners[i].subject_code);
       }
-      // console.log(this.alloted_examiners);
+       console.log(this.alloted_examiners);
     });
   }
 
@@ -138,13 +144,14 @@ export class AllotedComponent implements OnInit {
     }
 
 
-  updateAlloted(alloted) {
-    if(this.ps_name===''){
+  updateAlloted(alloted, idx) {
+    if(this.ps_name[idx]===''){
       this.toasterService.pop("info","Please Select Papper Setter Name");
       return;
     }
     else{
-      this.allotedService.updateAlloted(alloted, this.ps_name).subscribe(res =>  this.getAlloted());
+      console.log(this.ps_name[idx]);
+      this.allotedService.updateAlloted(alloted, this.ps_name[idx]).subscribe(res =>  this.getAlloted());
     }
    
 

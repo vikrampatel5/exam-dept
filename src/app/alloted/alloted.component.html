@@ -88,14 +88,14 @@
             <div>
               <div class="row">
               <div class="col-8">
-                  <select class="form-control" id="#ps" [(ngModel)]="ps_name" *ngIf="!alloted.ps_name">  
-                      <option>{{alloted.internal_examiner}}</option>
-                      <option>{{alloted.external_examiner}}</option>
+                  <select class="form-control" id="#ps" [(ngModel)]="ps_name[idx]" *ngIf="!alloted.ps_name">  
+                      <option value="{{alloted.internal_examiner}}">{{alloted.internal_examiner}}</option>
+                      <option value="{{alloted.external_examiner}}">{{alloted.external_examiner}}</option>
                 </select>
                 <div *ngIf="alloted.ps_name">{{alloted.ps_name}}</div>
               </div>
               <div class="col-4" *ngIf="!alloted.ps_name">
-                  <button (click)="updateAlloted(alloted)" class="btn btn-sm btn-outline-success">Update</button>
+                  <button (click)="updateAlloted(alloted, idx)" class="btn btn-sm btn-outline-success">Update</button>
               </div> 
             </div>
           </div>

@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { NotificationService } from '../services/notification.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 declare const $;
 
 @Component({
@@ -17,34 +19,49 @@ declare const $;
 })
 export class PaperRecievedComponent implements OnInit {
 
+  myform: FormGroup;
   data: { to: any; subject: string; text: string; };
   emails = [];
+
   public selectedExaminerToNotify : EmailItem[] = [];
-  // alloted_examiners: AllotedItem[];
-  codes =  ['BM2951', 'BM4953'];
+
   alloted_examiners: AllotedItem[];
-  selectedValues= [];
-  options = ['Not Generated', 'Generated'];
-  status: '';
-  proposal: '';
+  selectedValues = [];
+  public status = [];
+  public proposal = [];
 
   constructor(private allotedService: AllotedService,
      private http: HttpClient,
     private notificationService: NotificationService,
     private toasterService: ToasterService,
-  ) { }
+  ) { 
+    this.data = {
+      to : [],
+      subject: '',
+      text: ''
+    }
+
+  }
 
   ngOnInit() {
     this.getStatus();
+
+    this.myform = new FormGroup({
+
+      text: new FormControl('', [
+          Validators.required
+      ]),
+      subject: new FormControl('')
+  });
   }
 
-  updateStatus(alloted, ps_name) {
-    console.log(ps_name);
+  updateStatus(alloted, ps_name, idx) {
+   
     if (alloted.status !== '') {
-      alloted.status = this.status;
+      alloted.status = this.status[idx];
     }
     if (alloted.proposal !== '') {
-      alloted.proposal = this.proposal;
+      alloted.proposal = this.proposal[idx];
     }
 
     this.allotedService.updateAlloted(alloted, ps_name).subscribe(res => this.getStatus());
@@ -63,8 +80,6 @@ export class PaperRecievedComponent implements OnInit {
 }
 
 notify() {
-  
- 
     
   this.allotedService.getSelectedEmail(this.selectedValues).subscribe(
     res => {
@@ -79,13 +94,9 @@ notify() {
     this.selectedExaminerToNotify.map(item => this.emails.push(item.email));
  // console.log(this.selectedExaminerToNotify);
 
-this.data = {
-  to : this.emails,
-  subject: 'Just For Fun',
-  text: 'This is Custom Messsage'
-}
+this.data.to = this.emails;
 this.sendMail();
-
+this.closex();
 }
 
 sendMail() {
@@ -139,4 +150,24 @@ this.notificationService.sendMail(this.data).subscribe(res => {
     console.log(this.selectedValues);
   }
 
+
+  openAddWindow() {
+    if(this.selectedValues.length===0){
+      this.toasterService.pop('info',"Please Select Atleast one E-record");
+      this.closex();
+    }
+    $('#entry').val('Add');
+    $('.modal_form').toggleClass('modal_form_on');
+    $('.overlay').toggleClass('overlay_on');
+    }
+  
+    closex() {
+      $('.modal_form').toggleClass('modal_form_on');
+      $('.overlay').toggleClass('overlay_on');
+    }
+
+
+    isValid(field: string) {
+      return !this.myform.get(field).valid && this.myform.get(field).touched;
+    }
 }

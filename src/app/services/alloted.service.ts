@@ -19,8 +19,8 @@ export class AllotedItem {
 
 export class EmailItem{
   constructor(
-    public email: string,
-    public name: string
+    public email: string
+    // public name: string
   ){}
 }
 
@@ -95,21 +95,17 @@ export class AllotedService {
   }
 
   getSelectedEmail(codes): Observable<EmailItem[]>{
-    //console.log(codes);
-    // const params = new HttpParams().set('codes', codes);
-    // console.log(params);
     return this.http
       .get('http://localhost:3000/alloted/get_selected_email', {params: {'codes': codes}})
       .map(
         res => {
           return res.json().map(item => {
-            // console.log(res);
             return new EmailItem(
-              item.email,
-              item.name
-            )
-          })
-        }
+              item.email
+              // item.name
+            );
+          });
+        },
       )
   }
 

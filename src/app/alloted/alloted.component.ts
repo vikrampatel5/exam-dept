@@ -243,38 +243,7 @@ myFunction(code){
     this.http.get('http://localhost:3000/appointment/generate').subscribe();
   }
 
-  notify() {
-    
-    
-      this.allotedService.getSelectedEmail(this.selectedValues).subscribe(res => {
-        // console.log(res);
-        this.selectedExaminerToNotify = res;
-      });
-    // console.log(this.selectedExaminerToNotify);
-    this.selectedExaminerToNotify.map(item => {this.emails.push(item.email)});
-    this.data = {
-      to : this.emails,
-      subject: 'Just For Fun',
-      text: 'This is Custom Messsage'
-    }
-    this.sendMail();
-
-  }
-
-  sendMail() {
-    // console.log(this.data);
-    this.message = 'Sending E-mail please wait...';
-    this.notificationService.sendMail(this.data).subscribe(res => {
-      if(res.status === true){
-        this.toasterService.pop('success',res.message);
-      }
-      else{
-        this.toasterService.pop('error',res.message);
-      }
-    });
-  }
-
-
+ 
 
   /*****************************************************************/ 
 }

@@ -15,6 +15,12 @@
           </div>
         </div>
       </div>
+      <div class="col-1">
+        <input type="checkbox" id="click" style="display:none;" />
+        <label class="button-dark" for="click">
+          <a id="add" class="btn btn-dark text-white" (click)="notify()">Notify</a>
+        </label>
+      </div>
   </div>
 
  
@@ -22,7 +28,9 @@
     <thead class="table-dark">
       <tr>
         <th>
-          <input type="checkbox" name="" id="">
+          <div class="ui-g" style="margin-bottom:10px">
+            <input type="checkbox" name="selectAll" [(ngModel)]="all" (change)="selectAll()">
+            </div>
         </th>
         <th>#</th>
         <th>Subject Code</th>
@@ -34,9 +42,7 @@
     <tbody>
       <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
         <td>
-            <div class="ui-g" style="margin-bottom:10px">
-               <p-checkbox name="groupname" value="{{idx}}" [(ngModel)]="selectedValues" inputId="{{alloted.subject_code}}" (change)="test()"></p-checkbox>
-            </div>
+            <input type="checkbox" name="cb" [checked]="all" value="{{alloted.subject_code}}" (change)="toggleSelection(alloted.subject_code)">
         </td>
         <th scope="row">{{idx+1}}</th>
         <td>{{alloted.subject_code}}</td>

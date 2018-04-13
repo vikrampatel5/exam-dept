@@ -108,7 +108,7 @@ alloted.get("/get_selected_email", (req, res, next) => {
       var codes = req.query.codes;
       console.log(codes);
       conn.query(
-        "select email, name from examiners where Subject_Code IN (?) ",
+        "select email from examiners where Subject_Code IN (?) ",
         [codes],
         (err, result) => {
           if(err) return next(err);

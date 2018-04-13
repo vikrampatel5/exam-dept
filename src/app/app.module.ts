@@ -28,6 +28,7 @@ import { DashboardHomeComponent } from './dashboard-home/dashboard-home.componen
 import { UsersComponent } from './users/users.component';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { NotificationService } from './services/notification.service';
+import {AngularFontAwesomeModule} from 'angular-font-awesome'
 
 
 const appRoutes: Routes = [
@@ -85,6 +86,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserModule,
     HttpModule,
+    AngularFontAwesomeModule,
     HttpClientModule,
     NgxPaginationModule,
     RouterModule.forRoot(appRoutes)

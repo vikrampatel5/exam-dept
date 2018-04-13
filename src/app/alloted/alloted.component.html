@@ -12,8 +12,6 @@
         <option *ngFor="let scode of subjects" value={{scode.Code}} >{{scode.Code}}</option>
       </select>
       <p class="small" *ngIf="isValid('scode')">Subjecet Code is Mandatory</p>
-  
-   
         <label for="ex1_name">Internal Examiner</label>&nbsp;
         <select class="form-control" name="internal" id="ex1_name" [(ngModel)]="allot.internal_examiner"  formControlName="internal" >
           <option value="">None</option>

@@ -3,13 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { stringify } from 'querystring';
 import { SubjectService, SubjectItem, CodeItem } from '../services/subject.service';
-import { AllotedService, AllotedItem } from '../services/alloted.service';
+import { AllotedService, AllotedItem, EmailItem } from '../services/alloted.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import * as $ from 'jquery';
 import * as XLSX from 'xlsx';
 import { forEach } from '@angular/router/src/utils/collection';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-alloted',
@@ -18,13 +20,12 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 })
 export class AllotedComponent implements OnInit {
 
+  selectedValues = [];
   subjectGroups: CodeItem[];
   message= '';
-  data = {
-    to : 'vikrampatel5@gmail.com',
-    subject: 'Just For Fun',
-    text: 'This is Custom Messsage'
-  };
+  emails = [];
+  data = { };
+  all : boolean;
   groups = [];
   myform: FormGroup;
   selectedAll: any;
@@ -37,20 +38,18 @@ export class AllotedComponent implements OnInit {
   };
 
   ps_name: '';
-
-  selection = [];
-  arr = [];
   subjects: SubjectItem[];
   internal_examiners: any;
   external_examiners: any;
 
 
-  public selectedExaminerToNotify = [];
+  public selectedExaminerToNotify : EmailItem[] = [];
 
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
     private allotedService: AllotedService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private notificationService: NotificationService
   ) {
       this.subjectGroups = []
      }
@@ -58,7 +57,7 @@ export class AllotedComponent implements OnInit {
   ngOnInit() {
     this.getCodes();
     this.getAlloted();
-    //this.getSubjectGroups('BM29003');
+    // this.getSubjectGroups('BM29003');
 
     this.myform = new FormGroup({
 
@@ -83,16 +82,15 @@ export class AllotedComponent implements OnInit {
 
 
   allotExaminers() {
-    if(this.allot.internal_examiner==='' && this.allot.external_examiner===''){
-      this.toasterService.pop('info','No Examiner to Allot. Please Select atleast one')
+    if ( this.allot.internal_examiner === '' && this.allot.external_examiner === ''){
+      this.toasterService.pop('info', 'No Examiner to Allot. Please Select atleast one')
       return;
-    }
-    else{
+    }else {
       this.allotedService.addAlloted(this.allot).subscribe(res => {
-        if(res.status===true){
-          this.toasterService.pop('success',res.message);
+        if (res.status === true) {
+          this.toasterService.pop('success', res.message);
         }
-        this.getAlloted()
+        this.getAlloted();
       });
 
     }
@@ -102,11 +100,11 @@ export class AllotedComponent implements OnInit {
   getAlloted() {
     this.allotedService.getAlloted().subscribe(res => {
       this.alloted_examiners = res;
-      for (let i = 0; i < this.alloted_examiners.length; i++) { 
-        this.alloted_examiners[i]['selected']=false;
+      for (let i = 0; i < this.alloted_examiners.length; i++){
+        this.alloted_examiners[i]['selected'] = false;
         this.getSubjectGroups(this.alloted_examiners[i].subject_code);
-      } 
-      console.log(this.alloted_examiners);
+      }
+      // console.log(this.alloted_examiners);
     });
   }
 
@@ -153,7 +151,7 @@ export class AllotedComponent implements OnInit {
   }
 
   doit(type, fn, dl) {
-    if(this.alloted_examiners.length===0){
+    if (this.alloted_examiners.length === 0){
       this.toasterService.pop("info","No Data Found To Export");
     }
     else{
@@ -182,41 +180,45 @@ myFunction(code){
   // Select All Feature to be imeplemented  //
 
   toggleSelection(scode){
-    const idx = this.selection.indexOf(scode);
+    const idx = this.selectedValues.indexOf(scode);
     if(idx > -1){
-      this.selection.splice(idx,1);
+      this.selectedValues.splice(idx,1);
       this.alloted_examiners[idx]['selected'] = false;
     }
     else{
-      this.selection.push(scode);
-      const idx = this.selection.indexOf(scode);
+      this.selectedValues.push(scode);
+      const idx = this.selectedValues.indexOf(scode);
       this.alloted_examiners[idx]['selected'] = true;
     }
-    console.log(this.selection);
+    console.log(this.selectedValues);
   }
 
-  selectAll() {
-    this.selection = [];
-    for (var i = 0; i < this.alloted_examiners.length; i++) {
-      this.alloted_examiners[i]['selected'] = this.selectedAll;
-      if(this.alloted_examiners[i]['selected'])
-        this.selection.push(this.alloted_examiners[i].subject_code);
 
+  selectAll(){
+    if(this.selectedValues.length === this.alloted_examiners.length){
+      this.alloted_examiners.map((item) => {
+        item['selected']=false;
+        this.selectedValues.pop();
+        
+      });
     }
-    console.log(this.selection);
-  }
-  checkIfAllSelected() {
-    this.selectedAll = this.alloted_examiners.every(function(item:any) {
-        return item['selected'] == true;
-      })
+    else {
+      this.alloted_examiners.map((item) => {
+        if(!this.selectedValues.includes(item.subject_code)){
+          item['selected']=true;
+          this.selectedValues.push(item.subject_code);
+        }
+      });
+    }
+    console.log(this.selectedValues);
   }
 
   getSubjectGroups(scode){
       this.subjectService.getSubjectGroups(scode).subscribe(res => {
        // this.subjectGroups = res;
-       console.log(this.subjectGroups);
+       // console.log(this.subjectGroups);
         this.groups.push(res);
-        console.log(this.groups);
+        // console.log(this.groups);
       })
   }
 
@@ -242,28 +244,33 @@ myFunction(code){
   }
 
   notify() {
-    let emails = [];
-    for(let code of this.selection){
-      this.allotedService.getSelectedEmail(code).subscribe(res => {
-        this.selectedExaminerToNotify.push(res);
+    
+    
+      this.allotedService.getSelectedEmail(this.selectedValues).subscribe(res => {
+        // console.log(res);
+        this.selectedExaminerToNotify = res;
       });
+    // console.log(this.selectedExaminerToNotify);
+    this.selectedExaminerToNotify.map(item => {this.emails.push(item.email)});
+    this.data = {
+      to : this.emails,
+      subject: 'Just For Fun',
+      text: 'This is Custom Messsage'
     }
-    for(let examiner of this.selectedExaminerToNotify){
-        emails.push(examiner.email);
-    }
-    console.log(this.selectedExaminerToNotify);
-    console.log(emails);
     this.sendMail();
-    // Write code for sending sms
+
   }
 
   sendMail() {
-
+    // console.log(this.data);
     this.message = 'Sending E-mail please wait...';
-    this.http.post('http://localhost:3000/notify/send_mail', this.data).subscribe(res => {
-       if (res) {
-         this.message = 'Message Sent Successfully';
-       }
+    this.notificationService.sendMail(this.data).subscribe(res => {
+      if(res.status === true){
+        this.toasterService.pop('success',res.message);
+      }
+      else{
+        this.toasterService.pop('error',res.message);
+      }
     });
   }
 

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { stringify } from 'querystring';
+import { HttpParams } from '@angular/common/http';
 
 export class AllotedItem {
   constructor(
@@ -17,8 +19,8 @@ export class AllotedItem {
 
 export class EmailItem{
   constructor(
-    public email,
-    public name
+    public email: string,
+    public name: string
   ){}
 }
 
@@ -92,12 +94,16 @@ export class AllotedService {
       });
   }
 
-  getSelectedEmail(code): Observable<EmailItem>{
+  getSelectedEmail(codes): Observable<EmailItem[]>{
+    //console.log(codes);
+    // const params = new HttpParams().set('codes', codes);
+    // console.log(params);
     return this.http
-      .get('http://localhost:3000/alloted/get_selected_email/'+code)
+      .get('http://localhost:3000/alloted/get_selected_email', {params: {'codes': codes}})
       .map(
         res => {
           return res.json().map(item => {
+            // console.log(res);
             return new EmailItem(
               item.email,
               item.name

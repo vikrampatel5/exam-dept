@@ -34,7 +34,9 @@
     <tbody>
       <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
         <td>
-          <input type="checkbox" name="" id="">
+            <div class="ui-g" style="margin-bottom:10px">
+               <p-checkbox name="groupname" value="{{idx}}" [(ngModel)]="selectedValues" inputId="{{alloted.subject_code}}" (change)="test()"></p-checkbox>
+            </div>
         </td>
         <th scope="row">{{idx+1}}</th>
         <td>{{alloted.subject_code}}</td>

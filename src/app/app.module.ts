@@ -3,7 +3,7 @@ import { NgModule, Component } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import {CheckboxModule} from 'primeng/checkbox';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ExaminersComponent } from './examiners/examiners.component';
@@ -27,6 +27,7 @@ import { UserService } from './services/users.service';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { UsersComponent } from './users/users.component';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
+import { NotificationService } from './services/notification.service';
 
 
 const appRoutes: Routes = [
@@ -78,6 +79,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     ToasterModule,
+    CheckboxModule,
     FormsModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
@@ -87,7 +89,7 @@ const appRoutes: Routes = [
     NgxPaginationModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ExaminerService, SubjectService, AllotedService, UserService],
+  providers: [ExaminerService, SubjectService, AllotedService, UserService, NotificationService],
   exports: [
     FilterPipe
   ],

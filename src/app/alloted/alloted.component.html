@@ -74,7 +74,9 @@
     <table class="table table-striped table-bordered table-sm">
       <thead class="table-dark">
         <tr>
-          <th> <input type="checkbox" name="all" [(ngModel)]="selectedAll" (change)="selectAll(); checkIfAllSelected();"/></th>
+          <th> <div class="ui-g" style="margin-bottom:10px">
+          <input type="checkbox" name="selectAll" [(ngModel)]="all" (change)="selectAll()">
+          </div></th>
           <th>#</th>
           <th>Subject Group</th>
           <th>Internal Examiner</th>
@@ -85,7 +87,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 5, currentPage: p}; let idx = index">
-          <td> <input type="checkbox" name="cb" value="{{alloted.subject_code}}" [(ngModel)]="alloted['selected']" (click)="toggleSelection(alloted.subject_code)"></td>
+          <td> <input type="checkbox" name="cb" [checked]="all" value="{{alloted.subject_code}}" (change)="toggleSelection(alloted.subject_code)"></td>
           <th scope="row">{{idx+1}}</th>
           <!-- <td><span *ngFor="let sg of groups[idx]">{{sg.Code}}/</span></td> -->
           <td>{{alloted.subject_code}}</td>

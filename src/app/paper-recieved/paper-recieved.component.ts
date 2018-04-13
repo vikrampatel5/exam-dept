@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AllotedService, AllotedItem } from '../services/alloted.service';
 import { HttpClient } from '@angular/common/http';
+import {CheckboxModule} from 'primeng/checkbox';
 import * as XLSX from 'xlsx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 declare const $;
 
 @Component({
@@ -15,7 +18,7 @@ export class PaperRecievedComponent implements OnInit {
   // alloted_examiners: AllotedItem[];
   codes =  ['BM2951', 'BM4953'];
   alloted_examiners: AllotedItem[];
-
+  selectedValues= [];
   options = ['Not Generated', 'Generated'];
   status: '';
   proposal: '';
@@ -42,13 +45,15 @@ export class PaperRecievedComponent implements OnInit {
     this.allotedService.getAlloted().subscribe(res => this.alloted_examiners = res);
   }
 
- 
-
   doit(type, fn, dl) {
     const json = this.alloted_examiners;
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
     const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['status'] };
     XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
     XLSX.writeFile(wb, fn || ('Received_Status.' + (type || 'xlsx')));
+}
+
+test(){
+  console.log(this.selectedValues);
 }
 }

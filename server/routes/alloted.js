@@ -54,7 +54,6 @@ alloted.post("/update_alloted", (req, res, next) => {
       });
     }
   });
- 
 });
 
 
@@ -99,15 +98,18 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
  
 });
 
-alloted.get("/get_selected_email/:code", (req, res, next) => {
+alloted.get("/get_selected_email", (req, res, next) => {
   con.getConnection(function(err, conn){
     if(err){
       return next(err);
     }
     else{
+      //console.log(req.query.codes);
+      var codes = req.query.codes;
+      console.log(codes);
       conn.query(
-        "select email, name from examiners where Subject_Code = ? ",
-        req.params.code,
+        "select email, name from examiners where Subject_Code IN (?) ",
+        [codes],
         (err, result) => {
           if(err) return next(err);
         conn.release();

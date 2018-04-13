@@ -8,21 +8,25 @@ var smtpTransport = nodemailer.createTransport({
     host: "smtp.gmail.com",
     auth: {
       user: "vikrampatel5@gmail.com",
-      pass: ""
+      pass: "076422025845"
     }
   });
 
 notify.post("/send_mail", (req, res, next) => {
-    // console.log('its here');
+    // console.log(req.body);
     var mailOptions = {
       to: req.body.to,
       subject: req.body.subject,
       text: req.body.text
     };
-    //console.log(mailOptions);
+    console.log(mailOptions);
     smtpTransport.sendMail(mailOptions, function(err, response) {
-      if (err) return next(err);
-      res.send(response);
+      if (err) {
+        return res.send({status: false, message: "Got Error While Sending mail"});
+      }
+      else{
+        return res.send({status: true, data: response, message: "Mail Successfully Sent"});
+      }
       });
   });
 

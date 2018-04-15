@@ -28,7 +28,12 @@ import { DashboardHomeComponent } from './dashboard-home/dashboard-home.componen
 import { UsersComponent } from './users/users.component';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { NotificationService } from './services/notification.service';
-import {AngularFontAwesomeModule} from 'angular-font-awesome'
+import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import { ExamCodesComponent } from './exam-codes/exam-codes.component';
+import {EditorModule} from 'primeng/editor';
+import { DepartmentService } from './services/department.service';
+import { DepartmentsComponent } from './departments/departments.component';
+
 
 
 const appRoutes: Routes = [
@@ -54,6 +59,8 @@ const appRoutes: Routes = [
       {path: 'change-password', component: ChangePasswordComponent, outlet: 'sub'},
       {path: 'help', component: HelpComponent, outlet: 'sub'},
       {path: 'scode', component: SubjectsComponent, outlet: 'sub'},
+      {path: 'departments', component: DepartmentsComponent, outlet: 'sub'},
+      {path: 'examcodes', component: ExamCodesComponent, outlet: 'sub'},
       {path: 'paperRecieved', component: PaperRecievedComponent, outlet: 'sub'},
     ]
   }
@@ -76,7 +83,9 @@ const appRoutes: Routes = [
     SubjectsComponent,
     PaperRecievedComponent,
     DashboardHomeComponent,
-    UsersComponent
+    UsersComponent,
+    ExamCodesComponent,
+    DepartmentsComponent
   ],
   imports: [
     ToasterModule,
@@ -86,12 +95,13 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserModule,
     HttpModule,
+    EditorModule,
     AngularFontAwesomeModule,
     HttpClientModule,
     NgxPaginationModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ExaminerService, SubjectService, AllotedService, UserService, NotificationService],
+  providers: [ExaminerService, SubjectService, AllotedService, UserService, NotificationService, DepartmentService],
   exports: [
     FilterPipe
   ],

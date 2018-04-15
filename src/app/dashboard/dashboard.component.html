@@ -22,15 +22,20 @@
             </a>
             <ul class="collapse list-unstyled" id="pageSubmenu">
               <li>
+                  <a class="link" [routerLink]="[{ outlets: { sub: ['scode']}}]">Subject Codes</a>
+              </li>
+              <li>
                 <a class="link" [routerLink]="[{ outlets: { sub: ['examiners']}}]">Registered Examiners</a>
               </li>
               <li>
-                <a class="link" [routerLink]="[{ outlets: { sub: ['scode']}}]">Subject Codes</a>
-              </li>
-              <li>
-              <li>
                 <a class="link" [routerLink]="[{ outlets: { sub: ['alloted']}}]">Alloted Examiners</a>
               </li>
+              <li>
+                <a class="link" [routerLink]="[{ outlets: { sub: ['examcodes']}}]">Exam Codes</a>
+              </li>
+              <li>
+                  <a class="link" [routerLink]="[{ outlets: { sub: ['departments']}}]">Departments</a>
+                </li>
               <li>
                 <a class="link" [routerLink]="[{ outlets: { sub: ['paperRecieved']}}]">Paper Recived Status</a>
               </li>

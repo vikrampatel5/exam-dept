@@ -9,9 +9,10 @@
       <form (ngSubmit)="notify()" [formGroup]="myform" novalidate>
         <label for="subject">Subject</label>
         <input class="form-control" id="subject" type="text" formControlName="subject" [(ngModel)]="data.subject">
-        <label for="text">Message</label>
-        <textarea class="form-control" id="text" formControlName="text" [(ngModel)]="data.text"></textarea>
-        <span class="small" *ngIf="!isValid('text')">Message is Required</span>
+        <label for="text">Body</label>
+        <!-- <h3 class="first">Default</h3> -->
+        <p-editor [(ngModel)]="data.html"  formControlName="text" [style]="{'height':'220px'}"></p-editor>
+        <span class="small" *ngIf="!isValid('text')">Body is Required</span>
         <br><br>
         <input type="submit" class="btn btn-lg btn-block btn-dark" [disabled]="myform.invalid" value="Notify">
       </form>

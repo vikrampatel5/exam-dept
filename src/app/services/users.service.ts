@@ -32,9 +32,8 @@ export class UserService {
   addUser(clerk) {
     return this.http.post('http://localhost:3000/users/addUser', clerk)
       .map( res => {
-        alert('User Added');
+        this.toasterService.pop('success',"User Added Successfully");
       });
-
   }
 
   loginCheck() {

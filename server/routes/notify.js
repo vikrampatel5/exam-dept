@@ -12,23 +12,30 @@ var smtpTransport = nodemailer.createTransport({
     }
   });
 
+
+
+
 notify.post("/send_mail", (req, res, next) => {
     // console.log(req.body);
     var mailOptions = {
       to: req.body.to,
       subject: req.body.subject,
-      text: req.body.text
+      html: req.body.html
     };
-    console.log(mailOptions);
-    smtpTransport.sendMail(mailOptions, function(err, response) {
-      if (err) {
-        return res.send({status: false, message: "Got Error While Sending mail"});
-      }
-      else{
-        return res.send({status: true, data: response, message: "Mail Successfully Sent"});
-      }
-      });
-  });
+    // console.log(mailOptions);
+    
+
+      smtpTransport.sendMail(mailOptions, function(err, response) {
+        if (err) {
+          return res.send({status: false, message: "Got Error While Sending mail"});
+        }
+        else{
+          return res.send({status: true, data: response, message: "Mail Successfully Sent"});
+        }
+        });
+    
+    });
+  
 
   module.exports = notify;
   

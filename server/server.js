@@ -5,6 +5,7 @@ var examinerRoutes = require("./routes/examiners.js");
 var subjectsRoutes = require("./routes/subjects.js");
 var allotedRoutes = require("./routes/alloted.js");
 var usersRoutes = require("./routes/users");
+var departmentRoutes = require("./routes/department")
 var paperRoutes = require('./routes/papers');
 var appointment = require('./routes/appointment');
 var notificationRoutes = require('./routes/notify');
@@ -30,6 +31,7 @@ app.use('/alloted', allotedRoutes);
 app.use('/users', usersRoutes);
 app.use('/papers', paperRoutes);
 app.use('/appointment',appointment);
+app.use('/department',departmentRoutes);
 app.use('/notify', notificationRoutes)
 
 app.use(function (err, req, res, next) {
@@ -42,5 +44,5 @@ app.use(function (err, req, res, next) {
 })
 
 app.listen(3000, function() {
-  console.log("Server is Running on port 3000 ");
+  console.log("Server is Running!! ");
 });

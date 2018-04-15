@@ -22,6 +22,7 @@ export class AllotedComponent implements OnInit {
 
   selectedValues = [];
   subjectGroups: CodeItem[];
+  response: Object;
   message= '';
   emails = [];
   data = { };
@@ -244,10 +245,14 @@ myFunction(code){
   /**********************/ 
 
 
-  /*************Notification and Email***************************/ 
+  /**************** Proposal Letter Generation ***********************/ 
 
   appointmentLetter() {
-    this.http.get('http://localhost:3000/appointment/generate').subscribe();
+    this.http.get('http://localhost:3000/appointment/generate',{params: {codes: this.selectedValues}}).subscribe(
+      (res:Response) => {
+        this.toasterService.pop('info',res.body);
+      }
+    );
   }
 
  

@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { NotificationService } from '../services/notification.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import * as quill from 'quill';
 
 declare const $;
 
@@ -19,8 +20,9 @@ declare const $;
 })
 export class PaperRecievedComponent implements OnInit {
 
+  text1: string;
   myform: FormGroup;
-  data: { to: any; subject: string; text: string; };
+  data: { to: any, subject: string, html: string };
   emails = [];
 
   public selectedExaminerToNotify : EmailItem[] = [];
@@ -38,7 +40,7 @@ export class PaperRecievedComponent implements OnInit {
     this.data = {
       to : [],
       subject: '',
-      text: ''
+      html: ''
     }
 
   }
@@ -79,24 +81,20 @@ export class PaperRecievedComponent implements OnInit {
     XLSX.writeFile(wb, fn || ('Received_Status.' + (type || 'xlsx')));
 }
 
-notify() {
+async notify() {
     
-  this.allotedService.getSelectedEmail(this.selectedValues).subscribe(
+  await this.allotedService.getSelectedEmail(this.selectedValues).toPromise().then(
     res => {
-      setTimeout(() => {
-        this.selectedExaminerToNotify = res;
-      }, 3000);
-     
+      this.selectedExaminerToNotify = res;
     }
   );
 
-
-    this.selectedExaminerToNotify.map(item => this.emails.push(item.email));
+  this.selectedExaminerToNotify.map(item => this.emails.push(item.email));
  // console.log(this.selectedExaminerToNotify);
 
-this.data.to = this.emails;
-this.sendMail();
-this.closex();
+  this.data.to = this.emails;
+  this.sendMail();
+  this.closex();
 }
 
 sendMail() {
@@ -170,4 +168,6 @@ this.notificationService.sendMail(this.data).subscribe(res => {
     isValid(field: string) {
       return !this.myform.get(field).valid && this.myform.get(field).touched;
     }
+
+    
 }

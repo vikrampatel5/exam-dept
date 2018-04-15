@@ -1,14 +1,4 @@
 
-#form-bg
-{
-    background-color: #eff9f0;
-    width:60%;
-    padding-bottom: 5%;
-    position: relative;
-    margin: 30% auto;
-    border-radius: 8px;
-}
-
 .heading
 {
     font-family: 'Bitter', serif;
@@ -34,36 +24,9 @@
 
 }
 
-#login-form
-{
-    margin-left: 15px !important;
-    margin-top: 15px !important;
-    margin-right: 15px !important;
-}
-
-#login-btn
-{
-    background-color: #191919 !important;
-    color: #eff9f0 !important;
-    width: 120px !important;
-    border-color: #191919 !important;
-    font-size: 20px !important;
-    font-weight: 500 !important;
-    margin-top: -10px !important;
-}
-
-#login-btn:hover
-{
-    background-color: #ef626c !important;
-    border-color: #ef626c !important;
-    /* color: #08131c !important; */
-    font-size: 20px !important;
-    font-weight: 600 !important;
-}
-
 
 .img-wrapper{
-    width: 50%;
+    width: 60%;
     margin: 0 auto;
 }
 

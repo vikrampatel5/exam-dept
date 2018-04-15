@@ -26,38 +26,26 @@ export class PaperRecievedService {
   }
 
   updateStatus(alloted){
-    const promise = new Promise((reject, resolve) => {
-      this.http.post('http://localhost:3000/paper/updateStatus', alloted)
-      .toPromise()
-      .then(
+     return this.http.post('http://localhost:3000/paper/updateStatus', alloted)
+      .subscribe(
         res => {
-          this.getStatus()
-          resolve();
+          this.getStatus();
         }
       );
-    });
-  }
+}
 
-  getStatus() {
-    const promise = new Promise((resolve, reject) => {
-      this.http.get('http://localhost:3000/papers/getStatus')
-        .toPromise()
-        .then(
-          res => {
-            // Success
-            this.paperStatus = res.json().map(item => {
-              return new PaperStatus(item.subject_code, item.examiner_id, item.proposal, item.recieved);
-            });
-            resolve();
-          },
-          msg => {
-            // Error
-            console.log(msg);
-            reject(msg);
-          }
-        );
-    });
-    return promise;
-  }
 
+  getStatus(): Observable<PaperStatus[]> {
+      return this.http.get('http://localhost:3000/papers/getStatus')
+      .map(res => {
+        return res.json().map(item => {
+           return new PaperStatus(
+             item.subject_code,
+             item.examiner_id,
+             item.proposal,
+             item.recieved
+           );
+         });
+      });
+    }
 }

@@ -9,7 +9,7 @@
    
       <label for="sub_code">Subject Code</label>&nbsp;
       <select class="form-control" name="scode" id="sub_code" (change)="myFunction(allot.subject_code)" [(ngModel)]="allot.subject_code"  formControlName="scode">
-        <option *ngFor="let scode of subjects" value={{scode.Code}} >{{scode.Code}}</option>
+        <option *ngFor="let scode of subjects" value={{scode.subject_code}} >{{scode.subject_code}}</option>
       </select>
       <p class="small" *ngIf="isValid('scode')">Subjecet Code is Mandatory</p>
         <label for="ex1_name">Internal Examiner</label>&nbsp;

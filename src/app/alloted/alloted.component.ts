@@ -12,6 +12,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { NotificationService } from '../services/notification.service';
+import { ExaminerItem } from '../services/examiner.service';
 
 @Component({
   selector: 'app-alloted',
@@ -33,16 +34,19 @@ export class AllotedComponent implements OnInit {
   alloted_examiners: AllotedItem[] = [];
   allot = {
     subject_code: '',
-    internal_examiner: '',
-    external_examiner: '',
-    ps_name: ''
+    exam_code: '',
+    examiner: '',
+    type: '',
+    proposal: '',
+    status: '',
+    proposal_sent: '',
+    recieved_time: ''
   };
 
   ps_name = [];
-  subjects: SubjectItem[];
+  subjects: ExaminerItem[];
   internal_examiners: any;
   external_examiners: any;
-
 
   public selectedExaminerToNotify : EmailItem[] = [];
 
@@ -52,13 +56,25 @@ export class AllotedComponent implements OnInit {
     private toasterService: ToasterService,
     private notificationService: NotificationService
   ) {
-      this.subjectGroups = []
+      this.subjectGroups = [];
+      this.allot = {
+        subject_code: '',
+        exam_code: '',
+        examiner: '',
+        type: '',
+        proposal: '',
+        status: '',
+        proposal_sent: '',
+        recieved_time: ''
+      };
      }
 
   ngOnInit() {
     this.getCodes();
+    // console.log(this.subjects);
     this.getAlloted();
     // this.getSubjectGroups('BM29003');
+    
 
     this.myform = new FormGroup({
 
@@ -83,7 +99,7 @@ export class AllotedComponent implements OnInit {
 
 
   allotExaminers() {
-    if ( this.allot.internal_examiner === '' && this.allot.external_examiner === ''){
+    if ( this.allot.examiner === ''){
       this.toasterService.pop('info', 'No Examiner to Allot. Please Select atleast one')
       return;
     }else {
@@ -92,9 +108,13 @@ export class AllotedComponent implements OnInit {
           this.toasterService.pop('success', res.message);
           this.allot = {
             subject_code: '',
-            internal_examiner: '',
-            external_examiner: '',
-            ps_name: ''
+            exam_code: '',
+            examiner: '',
+            type: '',
+            proposal: '',
+            status: '',
+            proposal_sent: '',
+            recieved_time: ''
           };
         }
         this.getAlloted();
@@ -178,10 +198,12 @@ myFunction(code){
  // get internal Examiners for the subject
   this.http.get('http://localhost:3000/examiner/get_internal_examiners/'+code).subscribe(data => {
       this.internal_examiners = data;
+      console.log(this.internal_examiners);
     });
 
     this.http.get('http://localhost:3000/examiner/get_external_examiners/'+code).subscribe(data => {
       this.external_examiners = data;
+      console.log(this.external_examiners);
     });
   }
 

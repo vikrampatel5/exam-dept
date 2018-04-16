@@ -75,7 +75,7 @@ subjects.get("/get_subjects", (req, res, next) => {
       return next(err);
     }
     else{
-      conn.query("SELECT * FROM subjects", function(err, result, fields) {
+      conn.query("SELECT * FROM examiners", function(err, result, fields) {
         if (err) return next(err);
         conn.release();
         return res.send(result);

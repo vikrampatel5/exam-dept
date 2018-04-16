@@ -6,6 +6,7 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import {ExaminerItem } from '../services/examiner.service';
 
 export class SubjectItem {
   constructor(
@@ -70,14 +71,23 @@ export class SubjectService {
       );
   }
 
-  getSubjects(): Observable<SubjectItem[]> {
+  getSubjects(): Observable<ExaminerItem[]> {
    return this.http
         .get('http://localhost:3000/subject/get_subjects')
         .map(
           res => {
             // Success
             return res.json().map(item => {
-              return new SubjectItem(item.Code, item.Nomenclature, item.group_id);
+              return new ExaminerItem(
+                item.id,
+                item.name,
+                item.Subject_Code,
+                item.address,
+                item.email,
+                item.contact,
+                item.department,
+                item.type
+              );
             });
           },
         );

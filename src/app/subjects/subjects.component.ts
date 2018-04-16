@@ -7,6 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import * as FileSaver from 'file-saver';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { ExaminerItem } from '../services/examiner.service';
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
@@ -21,7 +22,7 @@ const EXCEL_EXTENSION = '.xlsx';
 
 export class SubjectsComponent implements OnInit {
   myform: FormGroup;
-  subjects: SubjectItem[];
+  subjects: ExaminerItem[];
 
   subject = {
     Code: '',

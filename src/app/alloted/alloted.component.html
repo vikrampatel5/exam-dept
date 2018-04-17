@@ -13,20 +13,18 @@
       </select>
       <p class="small" *ngIf="isValid('scode')">Subjecet Code is Mandatory</p>
         <label for="ex1_name">Internal Examiner</label>&nbsp;
-        <select class="form-control" name="internal" id="ex1_name" [(ngModel)]="allot_internal"  formControlName="internal" >
+        <select class="form-control" name="internal" id="ex1_name" (change)="getRange(allot_internal)" [(ngModel)]="allot_internal"  formControlName="internal" >
           <option value="">None</option>
           <option *ngFor="let examiner of internal_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
-    
    
         <label for="ex2_name">External Examiner</label>&nbsp;
-        <select class="form-control" name="external" id="ex2_name" [(ngModel)]="allot_external"  formControlName="external" >
+        <select class="form-control" name="external" id="ex2_name" (change)="getRange(allot_external)" [(ngModel)]="allot_external"  formControlName="external" >
             <option value="">None</option>
           <option *ngFor="let examiner of external_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
         <br>
       <button type="submit" class="btn btn-dark form-control" [disabled]="myform.invalid">Allot</button>
-
   </form>
   </div>
   </div>

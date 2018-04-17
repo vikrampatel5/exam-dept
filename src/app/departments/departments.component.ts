@@ -135,7 +135,7 @@ export class DepartmentsComponent implements OnInit {
     }
 
   getDepartments(){
-    this.departmentService.getDepartment().subscribe(
+    this.departmentService.getDepartments().subscribe(
       res => this.departments = res
     );
   }

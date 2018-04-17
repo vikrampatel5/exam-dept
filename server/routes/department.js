@@ -83,6 +83,24 @@ department.post("/add_department", (req, res, next) => {
     });
     });
 
+
+    department.get("/get_department/:ex_name", (req, res, next) => {
+      con.getConnection(function(err, conn){
+        if(err){
+          return next(err);
+        }
+        else{
+          var ex_name = req.params.ex_name;
+          conn.query("SELECT * FROM examiners where department = " + ex_name , function(err, result, fields) {
+            if (err) return next(err);
+            conn.release();
+            return res.send(result);
+          });
+        }
+      });
+      });
+
+
     department.post("/update_range", (req, res, next) => {
       con.getConnection(function(err, conn){
         if(err){

@@ -26,7 +26,7 @@ export class DepartmentService {
       );
   }
 
-  getDepartment(): Observable<DepartmentItem[]> {
+  getDepartments(): Observable<DepartmentItem[]> {
     return this.http
          .get('http://localhost:3000/department/get_departments')
          .map(
@@ -41,6 +41,15 @@ export class DepartmentService {
              });
            },
          );
+   }
+
+   getDepartment(name){
+     return this.http.get('http://localhost:3000/department/get_departments'+ name)
+     .map(
+       res => {
+         return res.json();
+       }
+     )
    }
 
    deleteDepartment(code) {
@@ -65,7 +74,7 @@ export class DepartmentService {
     return this.http.post('http://localhost:3000/department/update_range', dept)
       .map(
         res => {
-          this.getDepartment();
+          this.getDepartments();
           res.json();
         }
       );
@@ -75,7 +84,7 @@ export class DepartmentService {
     return this.http.post('http://localhost:3000/department/upload_file', file)
         .map(
           res => {
-            this.getDepartment();
+            this.getDepartments();
             return res.json();
           }
         );

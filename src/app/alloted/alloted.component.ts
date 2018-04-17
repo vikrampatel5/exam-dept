@@ -13,6 +13,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { NotificationService } from '../services/notification.service';
 import { ExaminerItem, ExaminerService } from '../services/examiner.service';
+import { DepartmentItem, DepartmentService } from '../services/department.service';
 
 @Component({
   selector: 'app-alloted',
@@ -21,8 +22,12 @@ import { ExaminerItem, ExaminerService } from '../services/examiner.service';
 })
 export class AllotedComponent implements OnInit {
 
-  selectedValues = [];
+  departments: DepartmentItem[];
   subjectGroups: CodeItem[];
+  alloted_examiners: AllotedItem[] = [];
+  public selectedExaminerToNotify : EmailItem[] = [];
+  selectedValues = [];
+  ranges = [];
   response: Object;
   message= '';
   emails = [];
@@ -31,7 +36,7 @@ export class AllotedComponent implements OnInit {
   groups = [];
   myform: FormGroup;
   selectedAll: any;
-  alloted_examiners: AllotedItem[] = [];
+  
   allot = {
     subject_code: '',
     exam_code: '',
@@ -48,13 +53,14 @@ export class AllotedComponent implements OnInit {
   external_examiners: any;
   allot_external: any;
 
-  public selectedExaminerToNotify : EmailItem[] = [];
+
 
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
     private examinerSerivce: ExaminerService,
     private allotedService: AllotedService,
     private toasterService: ToasterService,
+    private departmentService: DepartmentService,
     private notificationService: NotificationService
   ) {
       this.subjectGroups = [];
@@ -68,6 +74,8 @@ export class AllotedComponent implements OnInit {
 
   ngOnInit() {
     this.getCodes();
+    this.getDepartments();
+    // this.getRange(this.sc);
     // console.log(this.subjects);
     this.getAlloted();
     // this.getSubjectGroups('BM29003');
@@ -149,6 +157,34 @@ export class AllotedComponent implements OnInit {
       }
        console.log(this.alloted_examiners);
     });
+  }
+
+  async getDepartments(){
+    await this.departmentService.getDepartments().subscribe(
+      res => {
+        this.departments = res;
+      }
+    )
+  }
+
+  async getDepartment(ex_name){
+    await this.departmentService.getDepartment(ex_name).subscribe(
+      res => {
+        this.departments = res;
+      }
+    )
+  }
+  
+  getRange(sc){
+
+    this.departments.forEach(item=>{
+      Object.keys(item).forEach((key)=>{
+        if(item[key] === sc){
+          this.ranges.push({'start':item['start'],'end':item['end']});
+        }
+      })
+    })
+    // console.log(this.ranges);
   }
 
   deleteAlloted(id) {
@@ -293,7 +329,7 @@ myFunction(code){
     );
   }
 
- 
-
   /*****************************************************************/ 
+
+  
 }

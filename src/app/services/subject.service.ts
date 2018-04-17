@@ -71,22 +71,17 @@ export class SubjectService {
       );
   }
 
-  getSubjects(): Observable<ExaminerItem[]> {
+  getSubjects(): Observable<SubjectItem[]> {
    return this.http
         .get('http://localhost:3000/subject/get_subjects')
         .map(
           res => {
             // Success
             return res.json().map(item => {
-              return new ExaminerItem(
-                item.id,
-                item.name,
-                item.Subject_Code,
-                item.address,
-                item.email,
-                item.contact,
-                item.department,
-                item.type
+              return new SubjectItem(
+                item.Code,
+                item.Nomenclature,
+                item.group_id
               );
             });
           },

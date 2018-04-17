@@ -12,7 +12,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { NotificationService } from '../services/notification.service';
-import { ExaminerItem } from '../services/examiner.service';
+import { ExaminerItem, ExaminerService } from '../services/examiner.service';
 
 @Component({
   selector: 'app-alloted',
@@ -36,22 +36,23 @@ export class AllotedComponent implements OnInit {
     subject_code: '',
     exam_code: '',
     examiner: '',
-    type: '',
-    proposal: '',
-    status: '',
-    proposal_sent: '',
-    recieved_time: ''
+    type: ''
   };
+  dupAllot : any;
+  toAllot = [];
 
   ps_name = [];
-  subjects: ExaminerItem[];
+  subjects: SubjectItem[];
   internal_examiners: any;
+  allot_internal: any;
   external_examiners: any;
+  allot_external: any;
 
   public selectedExaminerToNotify : EmailItem[] = [];
 
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
+    private examinerSerivce: ExaminerService,
     private allotedService: AllotedService,
     private toasterService: ToasterService,
     private notificationService: NotificationService
@@ -61,11 +62,7 @@ export class AllotedComponent implements OnInit {
         subject_code: '',
         exam_code: '',
         examiner: '',
-        type: '',
-        proposal: '',
-        status: '',
-        proposal_sent: '',
-        recieved_time: ''
+        type: ''
       };
      }
 
@@ -99,28 +96,47 @@ export class AllotedComponent implements OnInit {
 
 
   allotExaminers() {
-    if ( this.allot.examiner === ''){
-      this.toasterService.pop('info', 'No Examiner to Allot. Please Select atleast one')
-      return;
-    }else {
-      this.allotedService.addAlloted(this.allot).subscribe(res => {
-        if (res.status === true) {
-          this.toasterService.pop('success', res.message);
-          this.allot = {
-            subject_code: '',
-            exam_code: '',
-            examiner: '',
-            type: '',
-            proposal: '',
-            status: '',
-            proposal_sent: '',
-            recieved_time: ''
-          };
-        }
-        this.getAlloted();
-      });
 
+    if(this.allot_internal === '' && this.allot_external === ''){
+      this.toasterService.pop('info', 'No Examiner to Allot. Please Select atleast one');
+      return;
     }
+    else {
+      if(this.allot_external != ''){
+        this.dupAllot = {
+          subject_code: this.allot.subject_code,
+          examiner: this.allot_external,
+          type: 'External'
+        }
+        this.toAllot.push(this.dupAllot);
+      }
+      if(this.allot_internal != ''){
+        this.dupAllot = {
+          subject_code: this.allot.subject_code,
+          examiner: this.allot_internal,
+          type: 'Internal'
+        }
+        this.toAllot.push(this.dupAllot);
+      }
+        this.allotedService.addAlloted(this.toAllot).subscribe(res => {
+          if (res.status === true) {
+            this.toasterService.pop('success', res.message);
+            this.getAlloted();
+          }
+          else{
+            this.toasterService.pop('error', res.message);
+          }
+        });
+    }
+    this.allot = {
+      subject_code: '',
+      exam_code: '',
+      examiner: '',
+      type: ''
+    };
+    this.allot_internal = '',
+    this.allot_external = '',
+    this.toAllot = [];
     this.closex();
   }
 
@@ -135,8 +151,8 @@ export class AllotedComponent implements OnInit {
     });
   }
 
-  deleteAlloted(scode) {
-    this.allotedService.deleteAlloted(scode).subscribe(res => {
+  deleteAlloted(id) {
+    this.allotedService.deleteAlloted(id).subscribe(res => {
       if(res.status === false){
         this.toasterService.pop('error',res.message);
       }

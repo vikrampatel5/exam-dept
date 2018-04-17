@@ -22,7 +22,7 @@ export class ExaminersComponent implements OnInit {
 private examiners: ExaminerItem[];
 
   myform: FormGroup;
-  subjects: ExaminerItem[];
+  subjects: SubjectItem[];
   examiner = {
     id : '',
     name : '',

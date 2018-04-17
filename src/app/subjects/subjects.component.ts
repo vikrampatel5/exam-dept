@@ -22,7 +22,7 @@ const EXCEL_EXTENSION = '.xlsx';
 
 export class SubjectsComponent implements OnInit {
   myform: FormGroup;
-  subjects: ExaminerItem[];
+  subjects: SubjectItem[];
 
   subject = {
     Code: '',

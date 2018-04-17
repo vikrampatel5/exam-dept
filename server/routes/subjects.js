@@ -75,7 +75,7 @@ subjects.get("/get_subjects", (req, res, next) => {
       return next(err);
     }
     else{
-      conn.query("SELECT * FROM examiners", function(err, result, fields) {
+      conn.query("SELECT * FROM subjects", function(err, result, fields) {
         if (err) return next(err);
         conn.release();
         return res.send(result);
@@ -90,7 +90,7 @@ subjects.get("/get_subjects", (req, res, next) => {
         return next(err);
       }
       else{
-        console.log(req.params.code);
+        // console.log(req.params.code);
         conn.query('Select group_id from subjects where code = ?',req.params.code,(err,results,fields)=>{
           if(err) return next(err);
           console.log(results);

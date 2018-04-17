@@ -6,13 +6,14 @@ import { HttpParams } from '@angular/common/http';
 
 export class AllotedItem {
   constructor(
+    public id: number,
     public subject_code: string,
-    public internal_examiner: string,
-    public internal_id: number,
-    public external_id: number,
-    public external_examiner: string,
-    public ps_name: string,
+    public exam_code: string,
+    public examiner: string,
+    public type: string,
     public proposal: string,
+    public proposal_sent: any,
+    public recieved_time: any,
     public status: string
   ) {}
 }
@@ -54,8 +55,9 @@ export class AllotedService {
       );
   }
 
-  deleteAlloted(scode) {
-    return this.http.delete('http://localhost:3000/alloted/delete_alloted/' + scode)
+  deleteAlloted(id) {
+    console.log('ID: '+id);
+    return this.http.delete('http://localhost:3000/alloted/delete_alloted/' + id)
       .map(
         res => {
           return res.json();
@@ -80,14 +82,15 @@ export class AllotedService {
             // Success
             return res.json().map(item => {
               return new AllotedItem(
+                item.id,
                 item.subject_code,
-                item.internal_examiner,
-                item.internal_id,
-                item.external_id,
-                item.external_examiner,
-                item.ps_name,
+                item.exam_code,
+                item.examiner,
+                item.type,
                 item.proposal,
-                item.status,
+                item.proposal_sent,
+                item.recieved_time,
+                item.status
               );
           },
         );

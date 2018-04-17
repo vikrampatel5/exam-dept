@@ -10,12 +10,15 @@ alloted.post("/add_alloted", (req, res, next) => {
     if(err){
       return next(err);
     }else{
-      conn.query("INSERT INTO alloted_examiners SET ?", req.body, function(
+      var data = ObjToArray(req.body);
+      console.log(data);
+      conn.query("INSERT INTO alloted_examiners (subject_code,examiner,type) VALUES ?", [data], function(
         err,
         result,
         fields
       ) {
         if(err){
+          console.log(err);
           return res.send({status:false, data:req.body, message:"Error While Alloting"});
         }
         conn.release();
@@ -79,10 +82,11 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
       return next(err);
     }
     else{
+      console.log(req.params);
       conn.query(
-        "delete from alloted_examiners where subject_code = ? ",
+        "delete from alloted_examiners where id = ? ",
         req.params.id,
-        (err, result) => {
+        (err, result) => {  
           if(err){
             conn.release();
             return res.send({status:false,message:"Error While Deleting"});
@@ -146,6 +150,21 @@ alloted.delete("/delete_all", (req, res, next) => {
   });
  
 });
+
+
+
+
+
+function ObjToArray(obj) {
+  var arr = obj instanceof Array;
+  return (arr ? obj : Object.keys(obj)).map(function(i) {
+    var val = arr ? i : obj[i];
+    if(typeof val === 'object')
+      return ObjToArray(val);
+    else
+      return val;
+  });
+}
 
 
 

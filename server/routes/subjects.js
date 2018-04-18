@@ -85,16 +85,28 @@ subjects.get("/get_subjects", (req, res, next) => {
   });
 
   subjects.get("/get_group/:code", (req, res, next) => {
+    var sc = '';
     con.getConnection(function(err, conn){
       if(err){
         return next(err);
       }
       else{
         // console.log(req.params.code);
-        conn.query('Select group_id from subjects where code = ?',req.params.code,(err,results,fields)=>{
+
+        conn.query('select subject_code from alloted_examiners where exam_code = ?', req.params.code,(err,results,fields)=>{
           if(err) return next(err);
-          // console.log(results);
-          var gid = results[0].group_id;
+          sc = results[0].subject_code;
+        
+
+        console.log(sc);
+        conn.query('Select group_id from subjects where Code = ?',sc,(err,results,fields)=>{
+          if(err) return next(err);
+          console.log(results);
+          if(results == []){
+            return res.send({status: false, message:'Error while fetching group_id'});
+          }
+          else{
+            var gid = results[0].group_id;
           // console.log(gid);
           if(gid > 0){
             conn.query("SELECT Code from subjects where group_id = ?",gid, function(err, results, fields) {
@@ -104,15 +116,16 @@ subjects.get("/get_subjects", (req, res, next) => {
           });
           }
           else{
-            conn.query("SELECT Code from subjects where Code=?",req.params.code,(err, results, fields)=>{
+            conn.query("SELECT Code from subjects where Code=?",sc,(err, results, fields)=>{
               if (err) return next(err);
               conn.release();
-              // console.log(results);
+              console.log(results);
               return res.send(results);
             });
           }
+        }
         });
-        
+      });
       }
     });
       

@@ -157,9 +157,7 @@ department.post("/add_department", (req, res, next) => {
                   req.params.id,
                   (err, result) => {
                     if(err){
-                     
                         return res.send({status: false, message:"Server Error"});
-                      
                     }else{
                     conn.release();
                     return res.send({status:true,data:result,message:"All Department Details Are Deleted Successfully"});
@@ -168,8 +166,6 @@ department.post("/add_department", (req, res, next) => {
                 );
               }
             });
-           
           });
-       
-
+          
 module.exports = department;

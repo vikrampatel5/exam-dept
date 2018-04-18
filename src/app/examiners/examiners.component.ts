@@ -59,8 +59,8 @@ private examiners: ExaminerItem[];
     this.myform = new FormGroup({
 
       email: new FormControl('', [
-          // Validators.required,
-          // Validators.email
+          Validators.required,
+          Validators.email
       ]),
       name: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
@@ -75,7 +75,7 @@ private examiners: ExaminerItem[];
       ]),
       contact: new FormControl('', [
           // Validators.minLength(10),
-          // Validators.required
+          Validators.required
       ])
   });
   }

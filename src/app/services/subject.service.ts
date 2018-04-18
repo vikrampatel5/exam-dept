@@ -88,8 +88,8 @@ export class SubjectService {
         );
   }
 
-  getSubjectGroups(scode):  Observable<CodeItem[]>{
-    return this.http.get('http://localhost:3000/subject/get_group/'+scode)
+  getSubjectGroups(ex_code):Observable<CodeItem[]>{
+    return this.http.get('http://localhost:3000/subject/get_group/' + ex_code)
                     .map(
                       res => {
                         return res.json().map(item => {

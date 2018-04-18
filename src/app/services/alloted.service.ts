@@ -38,6 +38,8 @@ export class AllotedService {
   }
 
   addAlloted(allot) {
+    console.log('this');
+    console.log(allot);
     return this.http.post('http://localhost:3000/alloted/add_alloted', allot)
       .map(
         res => {
@@ -46,7 +48,7 @@ export class AllotedService {
       );
   }
   updateAlloted(alloted, ps_name) {
-    alloted.ps_name = ps_name;
+    //alloted.exam = ps_name;
     return this.http.post('http://localhost:3000/alloted/update_alloted', alloted)
       .map(
         res => {

@@ -58,12 +58,14 @@ export class PaperRecievedComponent implements OnInit {
   }
 
   updateStatus(alloted, ps_name, idx) {
-   
+ 
     if (alloted.status !== '') {
       alloted.status = this.status[idx];
+      // alloted.recieved_time = new Date().getDate();
     }
     if (alloted.proposal !== '') {
       alloted.proposal = this.proposal[idx];
+      // alloted.proposal_sent = new Date().getDate();
     }
 
     this.allotedService.updateAlloted(alloted, ps_name).subscribe(res => this.getStatus());
@@ -125,7 +127,7 @@ this.notificationService.sendMail(this.data).subscribe(res => {
       const idx = this.selectedValues.indexOf(scode);
       this.alloted_examiners[idx]['selected'] = true;
     }
-    console.log(this.selectedValues);
+    // console.log(this.selectedValues);
   }
 
 
@@ -145,7 +147,7 @@ this.notificationService.sendMail(this.data).subscribe(res => {
         }
       });
     }
-    console.log(this.selectedValues);
+    // console.log(this.selectedValues);
   }
 
 

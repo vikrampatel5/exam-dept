@@ -22,6 +22,10 @@ import { DepartmentItem, DepartmentService } from '../services/department.servic
 })
 export class AllotedComponent implements OnInit {
 
+  ext_ex_codes= [];
+  ext_sub_code: number;
+  int_sub_code: number;
+  int_ex_codes= [];
   exam_code: any;
   examCodesArray =  [];
   ec: { "exam_code": any; };
@@ -58,8 +62,6 @@ export class AllotedComponent implements OnInit {
   external_examiners: any;
   allot_external: any;
 
-
-
   constructor(private http: HttpClient,
     private subjectService: SubjectService,
     private examinerSerivce: ExaminerService,
@@ -93,6 +95,9 @@ export class AllotedComponent implements OnInit {
       ]),
       internal: new FormControl(''),
       external: new FormControl(''),
+      ext_ex_codes: new FormControl(''),
+      int_ex_codes: new FormControl('')
+
   });
   }
 
@@ -107,53 +112,33 @@ export class AllotedComponent implements OnInit {
     });
   }
 
-
   allotExaminers() {
-
     if(this.allot_internal === '' && this.allot_external === ''){
       this.toasterService.pop('info', 'No Examiner to Allot. Please Select atleast one');
       return;
     }
     else {
-        this.ranges.forEach(item=>{
-            
-              if(item['rangeFound']===false ){
-                this.toasterService.pop('error','Range not Found for '+item['department']+' department');
-              }
-              else{
-                if(item['type']==='internal'){
-                  this.getExamCode();
-                  this.exam_code = this.getVal(item['start'],item['end']);
-                  console.log(this.exam_code);
-                  if(this.allot_internal != ''){
-                    this.dupAllot = {
-                      subject_code: this.allot.subject_code,
-                      examiner: this.allot_internal,
-                      type: 'internal',
-                      exam_code: this.exam_code || null
-                    }
-                    this.toAllot.push(this.dupAllot);
-                  }
-                }
-                else{
-                  if(this.allot_external != '' ){
-                    this.getExamCode();
-                    this.exam_code = this.getVal(item['start'],item['end']);
-                    console.log(this.exam_code);
-                    this.dupAllot = {
-                      subject_code: this.allot.subject_code,
-                      examiner: this.allot_external,
-                      type: 'external',
-                      exam_code: this.exam_code || null
-                    }
-                  this.toAllot.push(this.dupAllot);
-                }
-                }
+        if(this.allot_internal != '' && this.allot_internal != null){
+          this.dupAllot = {
+            subject_code: this.allot.subject_code,
+            examiner: this.allot_internal,
+            type: 'internal',
+            exam_code: this.int_sub_code || null
           }
-        })
+          this.toAllot.push(this.dupAllot);
         }
-        
-      
+                
+      if(this.allot_external != '' && this.allot_external != null ){
+        this.dupAllot = {
+          subject_code: this.allot.subject_code,
+          examiner: this.allot_external,
+          type: 'external',
+          exam_code: this.ext_sub_code || null,
+          
+        }
+      this.toAllot.push(this.dupAllot);
+    }
+
         this.allotedService.addAlloted(this.toAllot).subscribe(res => {
           if (res.status === true) {
             this.toasterService.pop('success', res.message);
@@ -176,13 +161,14 @@ export class AllotedComponent implements OnInit {
     this.ranges = [];
     this.closex();
   }
+}
 
   getAlloted() {
     this.allotedService.getAlloted().subscribe(res => {
       this.alloted_examiners = res;
       for (let i = 0; i < this.alloted_examiners.length; i++){
         this.alloted_examiners[i]['selected'] = false;
-        this.getSubjectGroups(this.alloted_examiners[i].subject_code);
+        //this.getSubjectGroups(this.alloted_examiners[i].subject_code);
       }
        // console.log(this.alloted_examiners);
     });
@@ -204,12 +190,13 @@ export class AllotedComponent implements OnInit {
         this.dept_name = res[0].department;
       }
     );
-    console.log(this.dept_name);
+    // console.log(this.dept_name);
     this.departments.forEach(item=>{
       Object.keys(item).forEach((key)=>{
         if(item[key] === this.dept_name){
           rangeFound = true;
-          this.ranges.push({'rangeFound':true,'type':type, 'department':this.dept_name,'start':item['start'],'end':item['end']});
+          this.createRangeArray(item['start'],item['end'],type);
+          // this.ranges.push({'rangeFound':true,'type':type, 'department':this.dept_name,'start':item['start'],'end':item['end']});
           return;
         }
       })
@@ -329,14 +316,14 @@ myFunction(code){
     console.log(this.selectedValues);
   }
 
-  getSubjectGroups(scode){
-      this.subjectService.getSubjectGroups(scode).subscribe(res => {
-       // this.subjectGroups = res;
-       // console.log(this.subjectGroups);
-        this.groups.push(res);
-        // console.log(this.groups);
-      })
-  }
+  // getSubjectGroups(scode){
+  //     this.subjectService.getSubjectGroups(scode).subscribe(res => {
+  //      // this.subjectGroups = res;
+  //      // console.log(this.subjectGroups);
+  //       this.groups.push(res);
+  //       // console.log(this.groups);
+  //     })
+  // }
 
   openAddWindow() {
     $('#entry').val('Add');
@@ -389,8 +376,6 @@ myFunction(code){
   }
 
   getVal(start,end){
-    
-
     // console.log(this.allotedExamCodes);
     for(let i=start; i<=end; i++){
       // console.log(i);
@@ -400,6 +385,15 @@ myFunction(code){
     }
     this.toasterService.pop('error','All Range Values are alloted');
     return;
+  }
+
+  createRangeArray(start,end,type){
+    if(type==='internal'){
+      this.int_ex_codes = this.range(this.int_ex_codes,start,end);
+    }
+    if(type==='external'){
+      this.ext_ex_codes = this.range(this.ext_ex_codes,start,end);
+    }
   }
   
 }

@@ -5,16 +5,16 @@
     <tr>
       <th>#</th>
       <th>Exam Code</th>
-      <th>Department</th>
+      <!-- <th>Department</th> -->
       <th>Subjects</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let ec of examCodes | filter : 'examCode' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
+    <tr *ngFor="let ms of mappedSubjects | filter : 'code' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
       <th scope="row">{{idx+1}}</th>
-      <td>{{ec.examCode}}</td>
-      <td>{{ec.dept}}</td>
-      <td ><span *ngFor="let ms of mappedSubjects[ec.examCode]; let last = last">{{ms.scode}}
+      <td>{{ms.code}}</td>
+      <!-- <td>{{ec.dept}}</td> -->
+      <td ><span *ngFor="let d of ms.data; let last = last">{{d.Code}}
         <span *ngIf="!last">/</span>
       </span></td>
     </tr>

@@ -11,18 +11,39 @@
       <select class="form-control" name="scode" id="sub_code" (change)="myFunction(allot.subject_code)" [(ngModel)]="allot.subject_code"  formControlName="scode">
         <option *ngFor="let scode of subjects" value={{scode.Code}} >{{scode.Code}}</option>
       </select>
-      <p class="small" *ngIf="isValid('scode')">Subjecet Code is Mandatory</p>
+      <div class="col-9 nopadding">
+        <p class="small" *ngIf="isValid('scode')">Subjecet Code is Mandatory</p>
         <label for="ex1_name">Internal Examiner</label>&nbsp;
         <select class="form-control" name="internal" id="ex1_name" (change)="getRange(allot_internal,'internal')" [(ngModel)]="allot_internal"  formControlName="internal" >
           <option value="">None</option>
           <option *ngFor="let examiner of internal_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
-   
+      </div>
+      <div class="col-3 nopadding">
+        <label for="sub">Exam Code: </label>
+        <input list="int_ex_codes" type="text" class="form-control" name="int_sub_code" id="int_sub_code" placeholder="Exam Code" [(ngModel)]="int_sub_code"
+        formControlName="int_ex_codes">
+        <datalist id="int_ex_codes">
+            <option value="{{code}}" *ngFor="let code of int_ex_codes"></option>
+        </datalist>
+      </div>
+      
+      <div class="col-9 nopadding">
         <label for="ex2_name">External Examiner</label>&nbsp;
         <select class="form-control" name="external" id="ex2_name" (change)="getRange(allot_external,'external')" [(ngModel)]="allot_external"  formControlName="external" >
             <option value="">None</option>
           <option *ngFor="let examiner of external_examiners" value={{examiner.name}} >{{examiner.name}}</option>
         </select>
+      </div>
+      <div class="col-3 nopadding">
+        <label for="sub">Exam Code: </label>
+        <input list="ext_ex_codes" type="text" class="form-control" name="ext_sub_code" id="ext_sub_code" placeholder="Exam Code" [(ngModel)]="ext_sub_code"
+        formControlName="ext_ex_codes">
+        <datalist id="ext_ex_codes">
+            <option value="{{code}}" *ngFor="let code of ext_ex_codes"></option>
+        </datalist>
+      </div>
+        
         <br>
       <button type="submit" class="btn btn-dark form-control" [disabled]="myform.invalid">Allot</button>
   </form>
@@ -66,8 +87,8 @@
           <input type="checkbox" name="selectAll" [(ngModel)]="all" (change)="selectAll()">
           </div></th>
           <th>#</th>
-          <th>Subject Code</th>
           <th>Exam Code</th>
+          <th>Subject Group</th>
           <th>Examiner</th>
           <th>Type</th>
           <th>Delete</th>
@@ -77,9 +98,12 @@
         <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 5, currentPage: p}; let idx = index">
           <td> <input type="checkbox" name="cb" [checked]="all" value="{{alloted.subject_code}}" (change)="toggleSelection(alloted.subject_code)"></td>
           <th scope="row">{{idx+1}}</th>
-          <!-- <td><span *ngFor="let sg of groups[idx]">{{sg.Code}}/</span></td> -->
+          
           <td>{{alloted.subject_code}}</td>
           <td>{{alloted.exam_code}}</td>
+          <!-- <td ><span *ngFor="let ms of mappedSubjects[ec.examCode]; let last = last">{{ms.scode}}
+            <span *ngIf="!last">/</span> -->
+          <!-- <td><span *ngFor="let sg of groups[idx]">{{sg.Code}}/</span></td> -->
           <td>{{alloted.examiner}}</td>
           <td>{{alloted.type}}</td>
           <!-- <td>

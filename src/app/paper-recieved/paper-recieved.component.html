@@ -54,23 +54,25 @@
             </div>
         </th>
         <th>#</th>
-        <th>Subject Code</th>
+        <th>Exam Code</th>
         <th>Examiner Name</th>
         <th>Proposal</th>
+        <!-- <th>Proposal Sent</th> -->
         <th>Status</th>
+        <!-- <th>Status Recieved</th> -->
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let alloted of alloted_examiners | filter : 'subject_code' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
+      <tr *ngFor="let alloted of alloted_examiners | filter : 'exam_code' : searchString | paginate: { itemsPerPage: 10, currentPage: p}; let idx = index">
         <td>
-            <input type="checkbox" name="cb" [checked]="all" value="{{alloted.subject_code}}" (change)="toggleSelection(alloted.subject_code)">
+            <input type="checkbox" name="cb" [checked]="all" value="{{alloted.exam_code}}" (change)="toggleSelection(alloted.subject_code)">
         </td>
         <th scope="row">{{idx+1}}</th>
-        <td>{{alloted.subject_code}}</td>
-        <td>{{alloted.ps_name | uppercase }}</td>
+        <td>{{alloted.exam_code}}</td>
+        <td>{{alloted.examiner | uppercase }}</td>
         <td><div id="#pp">
             <div class="row">
-            <div class="col-4"> 
+            <div class="col-8"> 
                 <select class="form-control input-sm" [(ngModel)]="proposal[idx]" *ngIf="alloted.proposal !== 'Generated'">
                     <option value="Not Generated">Not Generated</option>
                     <option value="Generated">Generated</option>
@@ -82,9 +84,10 @@
             </div>
           </div>
         </div></td>
+        <!-- <td>{{alloted.proposal_sent}}</td> -->
         <td><div id="#ps">
             <div class="row">
-            <div class="col-4"> 
+            <div class="col-8"> 
                 <select class="form-control input-sm" [(ngModel)]="status[idx]" *ngIf="alloted.status !== 'Received'">
                     <option value="Not Received">Not Received</option>
                     <option value="Received">Received</option>
@@ -96,6 +99,7 @@
             </div>
           </div>
         </div></td>
+        <!-- <td>{{alloted.recieved_time}}</td> -->
       </tr>
     </tbody>
   </table>

@@ -35,17 +35,19 @@ alloted.post("/update_alloted", (req, res, next) => {
       return next(err);
     }
     else{
-      var sc = req.body.subject_code;
+      console.log(req.body);
+      var ec = req.body.exam_code;
       var data = {
         subject_code: req.body.subject_code,
-        internal_examiner: req.body.internal_examiner,
-        external_examiner: req.body.external_examiner,
-        ps_name: req.body.ps_name,
+        examiner: req.body.examiner,
+        type: req.body.type,
         proposal: req.body.proposal,
+        proposal_sent: req.body.proposal_sent,
+        recieved_time: req.body.recieved_time,
         status: req.body.status
       }
       // console.log(req.body);
-      conn.query("UPDATE alloted_examiners SET ? where subject_code = '"+sc+"'", data, function(
+      conn.query("UPDATE alloted_examiners SET ? where exam_code = '"+ec+"'", data, function(
         err,
         result,
         fields
@@ -137,7 +139,7 @@ alloted.get("/exam_codes", (req, res, next) => {
           if(err) return next(err);
         conn.release();
         return res.send(result);
-        }
+        } 
       );
     }
   });

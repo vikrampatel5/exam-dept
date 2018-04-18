@@ -12,7 +12,7 @@ alloted.post("/add_alloted", (req, res, next) => {
     }else{
       var data = ObjToArray(req.body);
       console.log(data);
-      conn.query("INSERT INTO alloted_examiners (subject_code,examiner,type) VALUES ?", [data], function(
+      conn.query("INSERT INTO alloted_examiners (subject_code,examiner,type, exam_code) VALUES ?", [data], function(
         err,
         result,
         fields
@@ -114,6 +114,25 @@ alloted.get("/get_selected_email", (req, res, next) => {
       conn.query(
         "select email from examiners where Subject_Code IN (?) ",
         [codes],
+        (err, result) => {
+          if(err) return next(err);
+        conn.release();
+        return res.send(result);
+        }
+      );
+    }
+  });
+ 
+});
+
+alloted.get("/exam_codes", (req, res, next) => {
+  con.getConnection(function(err, conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query(
+        "select exam_code from alloted_examiners",
         (err, result) => {
           if(err) return next(err);
         conn.release();

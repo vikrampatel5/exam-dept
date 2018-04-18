@@ -112,4 +112,13 @@ export class AllotedService {
       )
   }
 
+  getAllotedExamCode(){
+    return this.http.get('http://localhost:3000/alloted/exam_codes')
+    .map(
+      res => {
+        return res.json();
+      }
+    )
+  }
+
 }

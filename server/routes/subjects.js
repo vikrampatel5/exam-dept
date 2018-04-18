@@ -52,7 +52,7 @@ subjects.post("/add_subject", (req, res, next) => {
         result
       ) {
         if (err){
-          console.log(err);
+          // console.log(err);
           if(err.errno = 1136){
             return res.send({status: false, message:"Column count doesn't match value count Or Null Value"});
           }
@@ -93,9 +93,9 @@ subjects.get("/get_subjects", (req, res, next) => {
         // console.log(req.params.code);
         conn.query('Select group_id from subjects where code = ?',req.params.code,(err,results,fields)=>{
           if(err) return next(err);
-          console.log(results);
+          // console.log(results);
           var gid = results[0].group_id;
-          console.log(gid);
+          // console.log(gid);
           if(gid > 0){
             conn.query("SELECT Code from subjects where group_id = ?",gid, function(err, results, fields) {
               if (err) return next(err);
@@ -107,7 +107,7 @@ subjects.get("/get_subjects", (req, res, next) => {
             conn.query("SELECT Code from subjects where Code=?",req.params.code,(err, results, fields)=>{
               if (err) return next(err);
               conn.release();
-              console.log(results);
+              // console.log(results);
               return res.send(results);
             });
           }

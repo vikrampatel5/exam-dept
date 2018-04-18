@@ -91,7 +91,7 @@ department.post("/add_department", (req, res, next) => {
         }
         else{
           var ex_name = req.params.ex_name;
-          conn.query("SELECT * FROM examiners where department = " + ex_name , function(err, result, fields) {
+          conn.query("SELECT department FROM examiners where name = ?", ex_name , function(err, result, fields) {
             if (err) return next(err);
             conn.release();
             return res.send(result);

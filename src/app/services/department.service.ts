@@ -44,9 +44,10 @@ export class DepartmentService {
    }
 
    getDepartment(name){
-     return this.http.get('http://localhost:3000/department/get_departments'+ name)
+     return this.http.get('http://localhost:3000/department/get_department/'+ name)
      .map(
        res => {
+         // console.log(res);
          return res.json();
        }
      )
@@ -89,4 +90,6 @@ export class DepartmentService {
           }
         );
     }
+
+    
 }

@@ -129,7 +129,8 @@ export class AllotedComponent implements OnInit {
                     this.dupAllot = {
                       subject_code: this.allot.subject_code,
                       examiner: this.allot_internal,
-                      type: 'internal'
+                      type: 'internal',
+                      exam_code: this.exam_code || null
                     }
                     this.toAllot.push(this.dupAllot);
                   }

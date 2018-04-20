@@ -102,8 +102,12 @@ private examiners: ExaminerItem[];
   }
 
   getExaminers() {
-    this.examinerService.getExaminers().subscribe(res => this.examiners = res);
-    // console.log(this.examiners);
+    this.examinerService.getExaminers().subscribe(res =>
+      { 
+        this.examiners = res;
+        
+      });
+
   }
 // Modal Window functions
  openAddWindow() {
@@ -195,8 +199,6 @@ private examiners: ExaminerItem[];
           const workbook = XLSX.read(bstr, {type: 'binary'});
           const first_sheet_name = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[first_sheet_name];
-          // console.log(worksheet);
-          // console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));
           const myFile = XLSX.utils.sheet_to_json(worksheet, { raw: true });
           this.examinerService.uploadFile(myFile).subscribe(res=>{
             if(res.status===false){
@@ -212,22 +214,22 @@ private examiners: ExaminerItem[];
     }
 
     doit(type, fn, dl) {
-      if(this.examiners.length===0){
-        this.toasterService.pop('info',"No Details Found to Export");
-      }
-      else{
+      // console.log(this.subjects);
+      if (this.subjects.length === 0) {
+        this.toasterService.pop('info', 'No Details Found to Export');
+      }else {
         const json = this.examiners;
+        // console.log(json);
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-        const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['ExaminerSheet'] };
+        const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
         XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
         XLSX.writeFile(wb, fn || ('Examiners.' + (type || 'xlsx')));
-        this.toasterService.pop('success',"Data Exported Successfully");
+        this.toasterService.pop('success', 'Data Exported Successfully');
       }
       
   }
 
   deleteAllExaminers(){
-    console.log(this.examiners);
     if(this.examiners.length===0){
       this.toasterService.pop('info',"No Details Found to Delete");
     }

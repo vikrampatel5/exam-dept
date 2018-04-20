@@ -93,7 +93,7 @@ export class ExaminerService {
           res => {
             // Success
             return res.json().map(item => {
-             // console.log(item);
+              // console.log(item);
               return new ExaminerItem(
                 item.id,
                 item.name,

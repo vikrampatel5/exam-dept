@@ -32,6 +32,7 @@ export class SubjectService {
     this.subjects = [];
   }
 
+
   addSCode(subject) {
     return this.http.post('http://localhost:3000/subject/add_subject', subject)
       .map(

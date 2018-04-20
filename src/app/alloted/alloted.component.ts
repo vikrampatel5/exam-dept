@@ -20,6 +20,9 @@ import { DepartmentItem, DepartmentService } from '../services/department.servic
   templateUrl: './alloted.component.html',
   styleUrls: ['./alloted.component.css']
 })
+
+
+
 export class AllotedComponent implements OnInit {
 
   ext_ex_codes= [];
@@ -100,6 +103,7 @@ export class AllotedComponent implements OnInit {
 
   });
   }
+
 
   isValid(field: string) {
     return !this.myform.get(field).valid && this.myform.get(field).touched;
@@ -238,6 +242,7 @@ export class AllotedComponent implements OnInit {
     }
 
 
+
   updateAlloted(alloted, idx) {
     if(this.ps_name[idx]===''){
       this.toasterService.pop("info","Please Select Papper Setter Name");
@@ -256,7 +261,7 @@ export class AllotedComponent implements OnInit {
       this.toasterService.pop("info","No Data Found To Export");
     }
     else{
-      const json = this.allotedService.alloted;
+      const json = this.alloted_examiners;
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
       const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
       XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});

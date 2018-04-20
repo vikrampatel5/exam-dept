@@ -59,10 +59,10 @@ export class SubjectsComponent implements OnInit {
   addSCode() {
     this.subjectService.addSCode(this.subject).subscribe(res => {
       if ( res.status === false) {
-        alert('Error Inserting: ' + res.message);
+        this.toasterService.pop('error', res.message);
       }else {
         this.getSubjects();
-        alert('Message: ' + res.message);
+        this.toasterService.pop('success',res.message)
       }
 
     });
@@ -74,7 +74,7 @@ export class SubjectsComponent implements OnInit {
   }
 
   deleteSubject(code) {
-    console.log(code);
+    
     this.subjectService.deleteSubject(code).subscribe(res => this.getSubjects());
   }
 
@@ -103,10 +103,12 @@ export class SubjectsComponent implements OnInit {
     }
 
    doit(type, fn, dl) {
+    // console.log(this.subjects);
     if (this.subjects.length === 0) {
       this.toasterService.pop('info', 'No Details Found to Export');
     }else {
-      const json = this.subjectService.subjects;
+      const json = this.subjects;
+      // console.log(json);
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
       const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
       XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'});
@@ -158,7 +160,7 @@ openAddWindow() {
   }
 
   deleteAllSubjects() {
-    console.log(this.subjects);
+    // console.log(this.subjects);
     if ( this.subjects.length === 0) {
       this.toasterService.pop('info', 'No Details Found to Delete');
     }else {

@@ -9,6 +9,7 @@ alloted.post("/add_alloted", (req, res, next) => {
   con.getConnection(function(err, conn){
     if(err){
       return next(err);
+      
     }else{
 <<<<<<< HEAD
       var data = ObjToArray(req.body);

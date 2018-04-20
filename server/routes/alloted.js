@@ -10,19 +10,30 @@ alloted.post("/add_alloted", (req, res, next) => {
     if(err){
       return next(err);
     }else{
+<<<<<<< HEAD
       var data = ObjToArray(req.body);
       console.log(data);
       conn.query("INSERT INTO alloted_examiners (subject_code,examiner,type, exam_code) VALUES ?", [data], function(
+=======
+      conn.query("INSERT INTO alloted_examiners SET ?", req.body, function(
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
         err,
         result,
         fields
       ) {
+<<<<<<< HEAD
         if(err){
           console.log(err);
           return res.send({status:false, data:req.body, message:"Error While Alloting"});
         }
         conn.release();
         return res.send({status:true, data:result, message:"Examiner Alloted Successfully"});
+=======
+        if(err) return next(err);
+        conn.release();
+        return res.send(req.body);
+        
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
       });
     }
   })
@@ -35,6 +46,7 @@ alloted.post("/update_alloted", (req, res, next) => {
       return next(err);
     }
     else{
+<<<<<<< HEAD
       console.log(req.body);
       var ec = req.body.exam_code;
       var data = {
@@ -48,6 +60,11 @@ alloted.post("/update_alloted", (req, res, next) => {
       }
       // console.log(req.body);
       conn.query("UPDATE alloted_examiners SET ? where exam_code = '"+ec+"'", data, function(
+=======
+      var sc = req.body.subject_code;
+      console.log(req.body);
+      conn.query("UPDATE alloted_examiners SET ? where subject_code = '"+sc+"'", req.body, function(
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
         err,
         result,
         fields
@@ -59,6 +76,7 @@ alloted.post("/update_alloted", (req, res, next) => {
       });
     }
   });
+ 
 });
 
 
@@ -84,6 +102,7 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
       return next(err);
     }
     else{
+<<<<<<< HEAD
       console.log(req.params);
       conn.query(
         "delete from alloted_examiners where id = ? ",
@@ -97,6 +116,16 @@ alloted.delete("/delete_alloted/:id", (req, res, next) => {
             conn.release();
             return res.send({status:true, data:result, message:"Detail Deleted Successfully"});
           }
+=======
+      conn.query(
+        "delete from alloted_examiners where subject_code = ? ",
+        req.params.id,
+        (err, result) => {
+          if(err) return next(err);
+          conn.release();
+          return res.send(result);
+         
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
         }
       );
     }

@@ -11,12 +11,16 @@ noFileExists = 0;
 var message = '';
 
 app.get('/generate',function(req,res,next){
+<<<<<<< HEAD
    
+=======
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
     con.getConnection(function(err,conn){
         if(err){
             return next(err);
         }
         else{
+<<<<<<< HEAD
             // console.log(req.query.codes);
             sql = "Select ae.ps_name, ae.subject_code, s.nomenclature, e.department, e.address FROM alloted_examiners AS ae JOIN examiners AS e on ae.subject_code = e.Subject_Code JOIN subjects AS s ON ae.subject_code = s.Code and ae.subject_code IN (?)";
             con.query(sql, [req.query.codes], (err, result, fields) => {
@@ -46,6 +50,28 @@ app.get('/generate',function(req,res,next){
             });
         }
     });
+=======
+            sql = "Select ae.ps_name, ae.subject_code, s.nomenclature, e.department, e.address FROM alloted_examiners AS ae JOIN examiners AS e on ae.subject_code = e.Subject_Code JOIN subjects AS s ON ae.subject_code = s.Code";
+            con.query(sql, (err, result, fields) => {
+                if(err) return next(err);
+                // console.log(result);
+                for(var i=0; i< result.length; i++){
+                    data = {
+                        name: result[i].ps_name,
+                        code: result[i].subject_code,
+                        nomenclature: result[i].nomenclature,
+                        dept: result[i].department,
+                        address: result[i].address
+                    }
+                    generateLetter(data, i);
+                }
+                conn.release();
+            });
+        }
+    });
+   
+    
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
 });
 
 

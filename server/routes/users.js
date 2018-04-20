@@ -3,17 +3,25 @@ var users = express.Router();
 var mysql = require("mysql");
 var con = require("./connection");
 
+<<<<<<< HEAD
 users.post('/addUser', (req, res, next) => {
+=======
+users.post("/addClerk", (req, res, next) => {
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
     con.getConnection(function(err,conn){
         if(err){
             return next(err);
         }
         else{
+<<<<<<< HEAD
             console.log(req.body);
+=======
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
             var data = {
                 id : req.body.id,
                 name : req.body.name,
                 email : req.body.email,
+<<<<<<< HEAD
                 password : req.body.password,
                 role : req.body.role
             }
@@ -22,9 +30,18 @@ users.post('/addUser', (req, res, next) => {
                 if (error) return next(error);
                 conn.release();
                 return res.send({message: 'Successfull Inserted!!'});
+=======
+                password : req.body.password
+            }
+            conn.query('Insert into users SET ?',data, function(error, results, fields){
+                if (error) return next(error);
+                conn.release();
+                return res.send(req.body);
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
             });
         }
     });
+    
 });
 
 users.get("/getUser", (req, res, next) => {

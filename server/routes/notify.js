@@ -16,7 +16,11 @@ var smtpTransport = nodemailer.createTransport({
 
 
 notify.post("/send_mail", (req, res, next) => {
+<<<<<<< HEAD
     // console.log(req.body);
+=======
+    // console.log('its here');
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
     var mailOptions = {
       to: req.body.to,
       subject: req.body.subject,

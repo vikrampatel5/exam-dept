@@ -15,6 +15,7 @@ subjects.post("/add_subject", (req, res, next) => {
           result,
           fields
         ) {
+<<<<<<< HEAD
           if (err) {
               return res.send({status:false,message:"Server Error"});
             }
@@ -22,9 +23,15 @@ subjects.post("/add_subject", (req, res, next) => {
             conn.release();
             return res.send({status:true,message:"Subject Code Added Succefully"});
           }
+=======
+          if (err) return next(err);
+          conn.release();
+          return res.send(req.body);
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
         });
       }
     });
+    
   });
 
   function ObjToArray(obj) {
@@ -39,6 +46,7 @@ subjects.post("/add_subject", (req, res, next) => {
   }
 
   subjects.post("/upload_file", (req, res, next) => {
+<<<<<<< HEAD
 
     con.getConnection(function(err, conn){
       if(err){
@@ -66,6 +74,31 @@ subjects.post("/add_subject", (req, res, next) => {
       });
       
       
+=======
+
+    con.getConnection(function(err, conn){
+      if(err){
+        return next(err);
+      }
+      else{
+        //console.log(req.body);
+    //var values = req.body;
+    var data = ObjToArray(req.body);
+    //var data = [];
+
+    // console.log(data);
+    conn.query("INSERT INTO subjects (Code, Nomenclature, group_id) VALUES ?", [data], function(
+      err,
+      result
+    ) {
+      if (err) return next(err);
+      conn.release();
+      return res.send(req.body);
+    });
+      }
+    });
+    
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
   });
 
 
@@ -82,6 +115,10 @@ subjects.get("/get_subjects", (req, res, next) => {
       });
     }
   });
+<<<<<<< HEAD
+=======
+    
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
   });
 
   subjects.get("/get_group/:code", (req, res, next) => {

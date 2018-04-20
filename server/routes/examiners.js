@@ -25,6 +25,7 @@ examiners.post("/add_examiner", (req, res, next) => {
         result,
         fields
       ) {
+<<<<<<< HEAD
         if (err) {
           if(err.errno == 1452){
             return res.send({status:false,message:"Please Insert Valid Subject Code Or Add Subject Code First"});
@@ -33,6 +34,12 @@ examiners.post("/add_examiner", (req, res, next) => {
         };
         conn.release();
         return res.send({status:true,message:"Examiner Inserted Succefully"});
+=======
+        if (err) return next(err);
+        conn.release();
+        return res.send(req.body);
+        
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
       });
     }
   });
@@ -46,11 +53,16 @@ examiners.post("/upload_file", (req, res, next) => {
     }
     else{
       var data = ObjToArray(req.body);
+<<<<<<< HEAD
 
+=======
+  // console.log(data);
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
   conn.query("INSERT INTO examiners( name, Subject_code, Department, Address) VALUES ?", [data], function(
     err,
     result
   ) {
+<<<<<<< HEAD
     if (err){
       console.log(err);
       if(err.errno == 1452){
@@ -67,6 +79,15 @@ examiners.post("/upload_file", (req, res, next) => {
   });
     }
   });
+=======
+    if (err) return next(err);
+    conn.release();
+    return res.send(req.body);
+    
+  });
+    }
+  });
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
   
 });
 
@@ -135,7 +156,11 @@ examiners.delete("/delete_examiner/:id", (req, res, next) => {
         (err, result) => {
           if(err) return next(err);
           conn.release();
+<<<<<<< HEAD
           return res.send({status:true,data:result,message:"Examiner Deleted Successfully"});
+=======
+          return res.send(result);
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
         }
       );
     }
@@ -143,6 +168,7 @@ examiners.delete("/delete_examiner/:id", (req, res, next) => {
  
 });
 
+<<<<<<< HEAD
 
 examiners.delete("/delete_all", (req, res, next) => {
   con.getConnection(function(err,conn){
@@ -178,6 +204,21 @@ examiners.get('/get_internal_examiners/:code',(req, res, next)=>{
       });
     }
   });
+=======
+examiners.get('/get_internal_examiners/:code',(req, res, next)=>{
+  con.getConnection(function(err,conn){
+    if(err){
+      return next(err);
+    }
+    else{
+      conn.query('select name from examiners where type="internal" and Subject_Code=?',req.params.code, function(err, result, fields) {
+        if (err) return next(err);
+        conn.release();
+        return res.send(result);
+      });
+    }
+  });
+>>>>>>> d3f6c1ed8450a4026c3d29ee840ff28daa6040d9
 });
 
 
